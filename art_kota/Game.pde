@@ -6,5 +6,5 @@ void draw() {
 // マウスの位置に色付きの円を描く
 fill(random(255), random(255), random(255), 100);
 noStroke();
-ellipse(mouseX, mouseY, 40, 40);
+ellipse(mouseX, mouseY, 80, 80);
 }
