@@ -17,7 +17,7 @@ float target_tate = 450;
 float dartX = -999;
 float dartY = -999;
 
-boolean isDartsFinish = false;//ミニゲームが終わったか
+boolean isDartsFinished = false;//ミニゲームが終わったか
 String dartsResultStr = "";//画面に表示する結果の文字
 int dartsResultColor;//結果の文字の色
 
@@ -27,7 +27,7 @@ void resetDarts(){
   barSpeed = 8;
   dartX = -999;
   dartY = -999;
-  isDartsFinish = false;
+  isDartsFinished = false;
   dartsResultStr = "";
 }
 
@@ -53,7 +53,7 @@ void DartsView(){
   rect(meterX + meter_yoko * 0.35, meterY, meter_yoko * 0.3, meter_tate);
   
   //動くバーの更新と描画
-  if (!isDartsFinish) {
+  if (!isDartsFinished) {
     barX += barSpeed;
     //ゲージの端に達したら跳ね返る
     if (barX < meterX || barX > meterX + meter_yoko) {
@@ -67,7 +67,7 @@ void DartsView(){
   line(barX, meterY - 5, barX, meterY + meter_tate + 5);
   
   //刺さったダーツの描画
-  if (dartX != -999) {
+  if (dartX != -999){
     //矢の形の代わりに、シンプルな「X」マークとピンで表現
     stroke(50);
     strokeWeight(3);
@@ -78,7 +78,7 @@ void DartsView(){
     ellipse(dartX, dartY, 8, 8);
   }
   
-  if (!isDartsFinish && dartHandImg != null) {
+  if (!isDartsFinished && dartHandImg != null) {
     imageMode(CENTER);
     //右下の位置
     image(dartHandImg, 80, 500, 300, 300);
@@ -87,14 +87,14 @@ void DartsView(){
   
   //結果テキストと案内表示
   textAlign(CENTER, CENTER);
-  if (isDartsFinish){
+  if (isDartsFinished){
     fill(dartsResultColor);
     textSize(36);
     text(dartsResultStr, width / 2, targetY / 2);
     
     fill(50);
     textSize(20);
-    text("【SPACEキー】でホームに戻る", width / 2, 580);
+    text("画面をクリックでホームに戻る", width / 2, 580);
   } else {
     fill(50);
     textSize(22);
@@ -103,13 +103,8 @@ void DartsView(){
 }
 
 //スペースキーが押された時のダーツ判定処理
-void stopDartsBar() {
-  if (isDartsFinish) {
-    //すでに終わっている場合はホーム画面へ戻る
-    gameState = 1; 
-    return;
-  }
-  isDartsFinish = true;
+void stopDartsBar(){
+  isDartsFinished = true;
   
   // バーの中心（ゲージの真ん中）からの距離を計算
   float meterCenter = meterX + meter_yoko / 2;
@@ -118,7 +113,7 @@ void stopDartsBar() {
   float maxDistance = meter_yoko / 2;
   float scoreRatio = distanceCenter / maxDistance;
   
-  if (scoreRatio < 0.3) {
+  if (scoreRatio < 0.3){
     //ダメ
     dartsResultStr = "BAD";
     dartsResultColor = color(50, 50, 50);
@@ -127,7 +122,7 @@ void stopDartsBar() {
     dartY = targetY + random(-target_tate * 0.04, target_tate * 0.04);
     money += 30000; // ご褒美にお金が増えたり！（お好みに変えてね）
   } 
-  else if(scoreRatio < 0.6) {
+  else if(scoreRatio < 0.6){
     //大成功
     dartsResultStr = "PERFECT!!";
     dartsResultColor = color(250, 50, 50);

@@ -7,11 +7,14 @@ float[] circleX = new float[4];//X座標しか変わらないから
 float circleY, circleR;
 //お金の初期値
 int money = 50000;
+//体重の初期化
+int weight = 120;
 //画像を保存する変数
 PImage charaImg;
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage targetImg;
 PImage dartHandImg;
+PImage[] trainingImgs = new PImage[3];//筋トレ用
 
 void setup() {
   size(800, 600);
@@ -22,12 +25,16 @@ void setup() {
   charaImg = loadImage("syuzinkou_tmp.jpg");
   
   selectImgs[0] = loadImage("manjaro_tmp.png");
-  selectImgs[1] = loadImage("kari.png");
+  selectImgs[1] = loadImage("kari1.png");
   selectImgs[2] = loadImage("kari2.png");
   selectImgs[3] = loadImage("kari3.png");
   
   targetImg = loadImage("target.png");
   dartHandImg = loadImage("darts_hand.png");
+  
+  trainingImgs[0] = loadImage("training1.png");
+  trainingImgs[1] = loadImage("training2.png");
+  trainingImgs[2] = loadImage("training3.png");
   
   //スタートボタンの位置とサイズ設定
   start_yoko = 200;
@@ -45,7 +52,7 @@ void setup() {
 }
 
 void draw() {
-  background(240); //画面の背景色をクリア
+  background(0,50,200); //画面の背景色をクリア
   if (gameState == 0) {
     StartView();
   } else if (gameState == 1) {
@@ -56,6 +63,8 @@ void draw() {
     GameClearView();
   } else if (gameState == 4) {
     DartsView();
+  } else if (gameState == 5) {
+    TrainingView();
   }
 }
 
@@ -73,21 +82,20 @@ void mousePressed() {
     for (int i = 0; i < 4; i++){
       float d = dist(mouseX, mouseY, circleX[i], circleY);
       if (d < circleR / 2){
-        // ここにミニゲーム開始の処理を書いていく
-        println("ミニゲーム " + (i + 1) + " が押されました！");
-        
+        //ミニゲーム開始の処理を書いていく
         if(i == 0){
           money -= 10000;
           resetDarts();
           gameState = 4;
           turnCount--;
-        } else{
+        } 
+        else if(i == 1){
+          resetTraining();
+          gameState = 5;
           turnCount--;
-          if(i == 1){}
         }
-         if(turnCount <= 0 && gameState == 1){//最後のミニゲームに割り込まないように
-          resetRace();//Raceタブから開かれる
-          gameState = 2;
+        else{
+          turnCount--;
         }
       }
     }
@@ -96,17 +104,41 @@ void mousePressed() {
     money = 50000;
     gameState = 0;
   }
+  else if (gameState == 4){
+    if(isDartsFinished){
+      gameState = 1;
+    //もしダーツ側の終了処理でgameStateが1（ホーム）に戻っており、かつターンが0ならレースへ
+      if (gameState == 1 && turnCount <= 0){
+        resetRace();
+        gameState = 2;
+      }
+    }
+  }
+  else if (gameState == 5){
+    //筋トレが完了している状態でクリックされたらホームへ
+    if (isTrainingFinished) {
+      gameState = 1; 
+      //もしターンが0ならそのままレースへ
+      if (turnCount <= 0) {
+        resetRace();
+        gameState = 2;
+      }
+    }
+  }
 }
-void keyPressed() {
+void keyPressed(){
   if (gameState == 2 && key == ' ' && isGround){
     playerV = jump;
     isGround = false;
   }
-  else if (gameState == 4 && key == ' ') {
-    stopDartsBar();
-    if (gameState == 1 && turnCount <= 0) {
-      resetRace();
-      gameState = 2;
+  else if (gameState == 4 && key == ' '){
+    if (!isDartsFinished){
+      stopDartsBar();
+    }
+  }
+  else if (gameState == 5 && key == ' '){
+    if (!isTrainingFinished){
+      trainingSpacePressed();
     }
   }
 }

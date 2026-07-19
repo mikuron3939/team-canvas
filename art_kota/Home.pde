@@ -15,9 +15,15 @@ void HomeView() {
   //右上の所持金表示
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
   fill(50);
-  textSize(24);
+  textSize(35);
   //nf()で使うことで3桁区切りのカンマを自動で
   text("所持金:￥" + nf(money, 0), width - 30, 20); 
+  textAlign(CENTER, CENTER);
+  //右上に体重を表示
+  textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
+  fill(50);
+  textSize(35);
+  text("体重:" + weight + "kg", width - 50, 60); 
   textAlign(CENTER, CENTER);
 
   // 画面下の4つの丸ボタンの描画
@@ -50,6 +56,8 @@ void HomeView() {
     textSize(20);
     if(i==0)
       text("マンジャロ", circleX[i], circleY - 40);
+    else if(i==1)
+       text("筋トレ", circleX[i], circleY-40);
     else if(i==2)
        text("ランニング", circleX[i], circleY-40);
   }
