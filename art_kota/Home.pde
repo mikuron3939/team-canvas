@@ -59,7 +59,7 @@ void HomeView() {
     else if(i==1)
        text("筋トレ", circleX[i], circleY-40);
     else if(i==2)
-       text("ランニング", circleX[i], circleY-40);
+       text("", circleX[i], circleY-40);
   }
   //OP
   if (isFirst){
