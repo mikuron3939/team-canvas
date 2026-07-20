@@ -61,4 +61,21 @@ void HomeView() {
     else if(i==2)
        text("ランニング", circleX[i], circleY-40);
   }
+  //OP
+  if (isFirst){
+    //画面全体を薄い黒で覆う
+    fill(0, 0, 0, 250); 
+    noStroke();
+    rect(0, 0, width, height);
+    //説明テキスト
+    textAlign(CENTER, CENTER);
+    fill(255); // 文字は白
+    textSize(32);
+    text("〜設定の説明〜", width / 2, height * 0.3);
+    // 閉じる案内
+    fill(250, 250, 100); // 目立つ黄色
+    textSize(18);
+    text("【 画面をクリックしてゲームを始める 】", width / 2, height * 0.8);
+    textAlign(CENTER, CENTER); // 設定を戻しておく
+  }
 }

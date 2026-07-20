@@ -9,6 +9,8 @@ float circleY, circleR;
 int money = 50000;
 //体重の初期化
 int weight = 120;
+boolean isFirst = true;
+
 //画像を保存する変数
 PImage charaImg;
 PImage[] selectImgs = new PImage[4];//選択肢用
@@ -79,6 +81,11 @@ void mousePressed() {
   } 
   //ホーム画面のとき
   else if (gameState == 1){
+    //設定の説明OP
+    if (isFirst) {
+      isFirst = false;
+      return;
+    }
     for (int i = 0; i < 4; i++){
       float d = dist(mouseX, mouseY, circleX[i], circleY);
       if (d < circleR / 2){
