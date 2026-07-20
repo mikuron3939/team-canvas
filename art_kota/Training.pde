@@ -39,8 +39,6 @@ void TrainingView() {
     if (situpProgress <= 0) {
       situpProgress = 0;
       isReturning = false; //再びクリック可能にする
-      // 戻りきったタイミングでカウントを増やす
-      setCount++;
       if (setCount >= 5) {
         isTrainingFinished = true;
       }
@@ -74,22 +72,21 @@ void TrainingView() {
     
     fill(50);
     textSize(20);
-    text("画面をクリックでホームに戻る", width / 2, height / 2 + 50);
+    text("画面をクリックでホームに戻る", width / 2, height / 2 + 50); 
   }
 }
 
 // spaceが押された時の処理
 void trainingSpacePressed() {
   //すでに5回終わっている、または自動で戻っている最中は無効
-  if (isTrainingFinished || isReturning) 
+  if (isTrainingFinished || isReturning)
     return;
   //spaceが押されるごとに起き上がる
   situpProgress += 15;
   // 100に達したら、自動で戻る
   if (situpProgress >= 100) {
     situpProgress = 100;
+    setCount++;
     isReturning = true;
-    // 【ご褒美効果】1回起き上がるごとにお金がちょっと増える演出
-    money += 1000; 
   }
 }

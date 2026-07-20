@@ -120,7 +120,7 @@ void stopDartsBar(){
     //ほぼ中心に刺さる
     dartX = targetX + random(-target_yoko * 0.04, target_yoko * 0.04);
     dartY = targetY + random(-target_tate * 0.04, target_tate * 0.04);
-    money += 30000; // ご褒美にお金が増えたり！（お好みに変えてね）
+    weight -= 5;
   } 
   else if(scoreRatio < 0.6){
     //大成功
@@ -131,6 +131,7 @@ void stopDartsBar(){
     float signY = random(1) < 0.5 ? -1 : 1;
     dartX = targetX + signX * random(target_yoko * 0.06, target_yoko * 0.28);
     dartY = targetY + signY * random(target_tate * 0.06, target_tate * 0.28);
+    weight -= 12;
   } 
   else{
     //普通
@@ -141,5 +142,6 @@ void stopDartsBar(){
     float signY = random(1) < 0.5 ? -1 : 1;
     dartX = targetX + signX * random(target_yoko * 0.32, target_yoko * 0.45);
     dartY = targetY + signY * random(target_tate * 0.32, target_tate * 0.45);
+    weight -= 10;
   }
 }

@@ -11,7 +11,18 @@ float circleY, circleR;
 int money = 50000;
 //体重の初期化
 int weight = 120;
+//OP
 boolean isFirst = true;
+//shop
+//shoes
+int shoesLevel = 0;//靴のランク
+int[] shoesPrices = {0,5000,10000,15000};//靴の価格
+float jumpPower = 0;//最終的なジャンプ力
+float nextX,nextY,next_yoko,next_tate;
+//drink
+int drinkLevel = 0;
+int[] drinkPrices = {0,5000,10000,15000};
+boolean isDrinkUsed = false;
 
 //画像を保存する変数
 PImage charaImg;
@@ -53,6 +64,11 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     circleX[i] = space * (i + 1);
   }
+  //進むボタン
+  next_yoko = 160;
+  next_tate = 50;
+  nextX = width - next_yoko - 30;
+  nextY = height - next_tate - 30;
 }
 
 void draw() {
@@ -69,6 +85,8 @@ void draw() {
     DartsView();
   } else if (gameState == 5) {
     TrainingView();
+  } else if (gameState == 8) {
+    ShopView();
   }
 }
 
@@ -91,7 +109,7 @@ void mousePressed() {
     for (int i = 0; i < 4; i++){
       float d = dist(mouseX, mouseY, circleX[i], circleY);
       if (d < circleR / 2){
-        //ミニゲーム開始の処理を書いていく
+        //ミニゲーム開始の処理
         if(i == 0){
           money -= 10000;
           resetDarts();
@@ -109,36 +127,97 @@ void mousePressed() {
       }
     }
   }
+  //ホーム
   else if(gameState == 3){
     money = 50000;
     gameState = 0;
   }
+  //ダーツ
   else if (gameState == 4){
     if(isDartsFinished){
       gameState = 1;
     //もしダーツ側の終了処理でgameStateが1（ホーム）に戻っており、かつターンが0ならレースへ
       if (gameState == 1 && turnCount <= 0){
-        resetRace();
-        gameState = 2;
+        gameState = 8;
       }
     }
   }
+  //筋トレ
   else if (gameState == 5){
     //筋トレが完了している状態でクリックされたらホームへ
     if (isTrainingFinished) {
+      weight -= 10;
+      kabeSpeed += 1;
       gameState = 1; 
       //もしターンが0ならそのままレースへ
       if (turnCount <= 0) {
-        resetRace();
-        gameState = 2;
+        gameState = 8;
       }
+    }
+  }
+  //shop
+  else if (gameState == 8) {
+    float botan_yoko = 180;
+    float botan_tate = 80;
+    float shoesY = height * 0.3;
+    
+    // 3つの靴ボタンの判定
+    for (int i = 0; i < 3; i++) {
+      float botanX = 60 + i * (botan_yoko + 40);
+      if (mouseX > botanX && mouseX < botanX + botan_yoko && mouseY > shoesY && mouseY < shoesY + botan_tate) {
+        int targetLevel = i + 1; //1～3段階
+        int price = shoesPrices[targetLevel];
+        // お金が足りていて、まだ持っていない上位の靴なら購入
+        if (money >= price && shoesLevel < targetLevel) {
+          money -= price;
+          shoesLevel = targetLevel;
+        }
+      }
+    }
+    float drinkY = height * 0.6;
+    for (int i = 0; i < 3; i++) {
+      float botanX = 60 + i * (botan_yoko + 40);
+      if (mouseX > botanX && mouseX < botanX + botan_yoko && mouseY > drinkY && mouseY < drinkY + botan_tate) {
+        int targetLevel = i + 1;
+        int price = drinkPrices[targetLevel];
+        
+        // お金が足りていて、まだ持っていない上位のドリンクなら購入
+        if (money >= price && drinkLevel < targetLevel) {
+          money -= price;
+          drinkLevel = targetLevel;
+        }
+      }
+    }
+    //レースへ進むボタン
+    if (mouseX > nextX && mouseX < nextX + next_yoko && mouseY > nextY && mouseY < nextY + next_tate) {
+      
+      //体重と靴のレベルからジャンプ力を計算
+      float baseJump = 15 + (shoesLevel * 2); 
+      float weightPenalty = (weight - 60)*0.5; // 体重60kg基準で、重いほどペナルティ
+      jumpPower = baseJump - weightPenalty;
+      
+      //ジャンプ力の最低値を保証（重すぎて飛べないのを防ぐ）
+      if (jumpPower < 3) jumpPower = 3; 
+      //レース開始処理へ
+      resetRace();
+      gameState = 2;
     }
   }
 }
 void keyPressed(){
   if (gameState == 2 && key == ' ' && isGround){
-    playerV = jump;
+    playerV = -jumpPower;
     isGround = false;
+  } else if (gameState == 2 && (key == 'e' || key == 'E')){
+    //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
+    if (drinkLevel > 0 && !isDrinkUsed && !isGoalSpawned && mutekiTimer == 0) {
+      isDrinkUsed = true;
+      drinkTimer = 180;//約3秒間
+      //レベルに応じて加速力を変える
+      if (drinkLevel == 1) drinkBoost = 3;//小加速
+      else if (drinkLevel == 2) drinkBoost = 6;//中加速
+      else if (drinkLevel == 3) drinkBoost = 10;//大加速
+    }
   }
   else if (gameState == 4 && key == ' '){
     if (!isDartsFinished){
