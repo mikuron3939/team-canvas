@@ -25,6 +25,8 @@ int[] drinkPrices = {0,5000,10000,15000};
 boolean isDrinkUsed = false;
 
 //画像を保存する変数
+PImage start_image;
+PImage start_logo;
 PImage charaImg;
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage targetImg;
@@ -37,9 +39,11 @@ void setup() {
   PFont font = createFont("MS Gothic", 24); //日本語でも文字化けしないように
   textFont(font);
   //画像の読み込み
+  start_image = loadImage("start_image.png");
+  start_logo = loadImage("start_logo.png");
   charaImg = loadImage("syuzinkou_tmp.jpg");
   
-  selectImgs[0] = loadImage("manjaro_tmp.png");
+  selectImgs[0] = loadImage("manjaro.png");
   selectImgs[1] = loadImage("kari1.png");
   selectImgs[2] = loadImage("kari2.png");
   selectImgs[3] = loadImage("kari3.png");
@@ -50,12 +54,6 @@ void setup() {
   trainingImgs[0] = loadImage("training1.png");
   trainingImgs[1] = loadImage("training2.png");
   trainingImgs[2] = loadImage("training3.png");
-  
-  //スタートボタンの位置とサイズ設定
-  start_yoko = 200;
-  start_tate = 60;
-  startX = width / 2 - start_yoko / 2;
-  startY = height * 0.7;
   
   //ホーム画面の4つの丸ボタンの設定
   circleY = height * 0.85;   //画面の下らへん

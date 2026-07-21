@@ -10,8 +10,8 @@ float barSpeed = 8;//バーの動く速度
 //的の位置とサイズ
 float targetX = 400;
 float targetY = 300;
-float target_yoko = 300;
-float target_tate = 450;
+float target_yoko = 800;
+float target_tate = 600;
 
 // ダーツの刺さった位置（-999はまだ刺さっていない状態）
 float dartX = -999;
@@ -118,8 +118,8 @@ void stopDartsBar(){
     dartsResultStr = "BAD";
     dartsResultColor = color(50, 50, 50);
     //ほぼ中心に刺さる
-    dartX = targetX + random(-target_yoko * 0.04, target_yoko * 0.04);
-    dartY = targetY + random(-target_tate * 0.04, target_tate * 0.04);
+    dartX = targetX + random(-30,30);
+    dartY = targetY + random(50,80);
     weight -= 5;
   } 
   else if(scoreRatio < 0.6){
@@ -129,8 +129,8 @@ void stopDartsBar(){
     //やや中心から離れた場所に刺さる
     float signX = random(1) < 0.5 ? -1 : 1;
     float signY = random(1) < 0.5 ? -1 : 1;
-    dartX = targetX + signX * random(target_yoko * 0.06, target_yoko * 0.28);
-    dartY = targetY + signY * random(target_tate * 0.06, target_tate * 0.28);
+    dartX = targetX + signX * random(target_yoko * 0.03, target_yoko * 0.2);
+    dartY = targetY + signY * random(target_tate * 0.03, target_tate * 0.2);
     weight -= 12;
   } 
   else{
@@ -140,8 +140,8 @@ void stopDartsBar(){
     //もっと中心から離れた場所に刺さる
     float signX = random(1) < 0.5 ? -1 : 1;
     float signY = random(1) < 0.5 ? -1 : 1;
-    dartX = targetX + signX * random(target_yoko * 0.32, target_yoko * 0.45);
-    dartY = targetY + signY * random(target_tate * 0.32, target_tate * 0.45);
+    dartX = targetX + signX * random(target_yoko * 0.3, target_yoko * 0.3);
+    dartY = targetY + signY * random(target_tate * 0.3, target_tate * 0.3);
     weight -= 10;
   }
 }

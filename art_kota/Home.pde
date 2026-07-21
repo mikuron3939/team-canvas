@@ -33,6 +33,8 @@ void HomeView() {
     
     imageMode(CENTER);
     if (selectImgs[i] != null) {//画像が読み込めていたら
+      fill(255, 255, 255);
+      ellipse(circleX[i], circleY, circleR, circleR);
       image(selectImgs[i], circleX[i], circleY, circleR, circleR);
     }
     
