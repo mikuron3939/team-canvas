@@ -13,6 +13,7 @@ int money = 50000;
 int weight = 100;
 //OP
 boolean isFirst = true;
+boolean isNextWeek = false;
 //shop
 //shoes
 int shoesLevel = 0;//靴のランク
@@ -27,6 +28,7 @@ boolean isDrinkUsed = false;
 //画像を保存する変数
 PImage start_image;
 PImage start_logo;
+PImage opImg;
 PImage[] charaImg = new PImage[4];
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage targetImg;
@@ -41,6 +43,8 @@ void setup() {
   //画像の読み込み
   start_image = loadImage("start_image.png");
   start_logo = loadImage("start_logo.png");
+  
+  opImg = loadImage("op.png");
   
   charaImg[0] = loadImage("100kg.png");
   charaImg[1] = loadImage("80kg.png");
@@ -101,6 +105,13 @@ void mousePressed() {
       isFirst = false;
       return;
     }
+    if(isNextWeek){
+      isNextWeek = false;
+      if(turnCount <= 0){
+        gameState = 8;
+      }
+      return;
+    }
     for (int i = 0; i < 4; i++){
       float d = dist(mouseX, mouseY, circleX[i], circleY);
       if (d < circleR / 2){
@@ -131,10 +142,7 @@ void mousePressed() {
   else if (gameState == 4){
     if(isDartsFinished){
       gameState = 1;
-    //もしダーツ側の終了処理でgameStateが1（ホーム）に戻っており、かつターンが0ならレースへ
-      if (gameState == 1 && turnCount <= 0){
-        gameState = 8;
-      }
+      isNextWeek = true;
     }
   }
   //筋トレ
@@ -144,10 +152,7 @@ void mousePressed() {
       weight -= 10;
       kabeSpeed += 1;
       gameState = 1; 
-      //もしターンが0ならそのままレースへ
-      if (turnCount <= 0) {
-        gameState = 8;
-      }
+      isNextWeek = true;
     }
   }
   //shop
@@ -192,7 +197,8 @@ void mousePressed() {
       jumpPower = baseJump - weightPenalty;
       
       //ジャンプ力の最低値を保証（重すぎて飛べないのを防ぐ）
-      if (jumpPower < 3) jumpPower = 3; 
+      if (jumpPower < 3) 
+        jumpPower = 3; 
       //レース開始処理へ
       resetRace();
       gameState = 2;

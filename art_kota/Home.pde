@@ -102,19 +102,49 @@ void HomeView() {
   }
   //OP
   if (isFirst){
+    imageMode(CORNER);
+    if (charaImg != null) { //画像が正しく読み込めていれば
+      image(opImg,0 , 0, width, height);
+    }
     //画面全体を薄い黒で覆う
-    fill(0, 0, 0, 250); 
+    fill(0, 0, 0, 100); 
     noStroke();
     rect(0, 0, width, height);
     //説明テキスト
-    textAlign(CENTER, CENTER);
     fill(255); // 文字は白
     textSize(32);
-    text("〜設定の説明〜", width / 2, height * 0.3);
-    // 閉じる案内
+    text("必修科目のハードル走を取らないと卒業できない！" ,width / 2, height * 0.3);
+    text("このままだと単位を落としちゃう...",width / 2, height * 0.45);
+    text("単位取得を目指して,",width / 2, height * 0.6);
+    textSize(50);
+    text("5週間のダイエット生活が始まる！",width / 2, height * 0.75);
+    //閉じる案内
     fill(250, 250, 100); // 目立つ黄色
     textSize(18);
-    text("【 画面をクリックしてゲームを始める 】", width / 2, height * 0.8);
+    text("【 画面をクリックしてゲームを始める 】", width / 2, height * 0.9);
+    textAlign(CENTER, CENTER); // 設定を戻しておく
+  }else if(isNextWeek){
+    //ターン終了後の時間経過表示
+    //画面全体を薄い黒で覆う
+    fill(0, 0, 0, 100); 
+    noStroke();
+    rect(0, 0, width, height);
+    //説明テキスト
+    fill(255); // 文字は白
+    textSize(50);
+    if(turnCount > 0){
+      text("残り" + turnCount + "週間..." ,width / 2, height / 2);
+    } else {
+      fill(255,0,0); // 金色で強調
+      text("5週間のトレーニング終了！", width / 2, height * 0.5);
+      textSize(30);
+      fill(255);
+      text("アイテムを買ってレースに挑もう！", width / 2, height * 0.58);
+    }
+    //閉じる案内
+    fill(250, 250, 100); // 目立つ黄色
+    textSize(18);
+    text("【 画面をクリックして閉じる 】", width / 2, height * 0.4);
     textAlign(CENTER, CENTER); // 設定を戻しておく
   }
 }
