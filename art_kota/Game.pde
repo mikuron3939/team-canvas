@@ -10,7 +10,7 @@ float circleY, circleR;
 //お金の初期値
 int money = 50000;
 //体重の初期化
-int weight = 120;
+int weight = 100;
 //OP
 boolean isFirst = true;
 //shop
@@ -27,7 +27,7 @@ boolean isDrinkUsed = false;
 //画像を保存する変数
 PImage start_image;
 PImage start_logo;
-PImage charaImg;
+PImage[] charaImg = new PImage[4];
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage targetImg;
 PImage dartHandImg;
@@ -41,7 +41,11 @@ void setup() {
   //画像の読み込み
   start_image = loadImage("start_image.png");
   start_logo = loadImage("start_logo.png");
-  charaImg = loadImage("syuzinkou_tmp.jpg");
+  
+  charaImg[0] = loadImage("100kg.png");
+  charaImg[1] = loadImage("80kg.png");
+  charaImg[2] = loadImage("65kg.png");
+  charaImg[3] = loadImage("50kg.png");
   
   selectImgs[0] = loadImage("manjaro.png");
   selectImgs[1] = loadImage("kari1.png");
@@ -55,13 +59,6 @@ void setup() {
   trainingImgs[1] = loadImage("training2.png");
   trainingImgs[2] = loadImage("training3.png");
   
-  //ホーム画面の4つの丸ボタンの設定
-  circleY = height * 0.85;   //画面の下らへん
-  circleR = 150;             //丸の直径
-  float space = width / 5; //画面を５等分
-  for (int i = 0; i < 4; i++) {
-    circleX[i] = space * (i + 1);
-  }
   //進むボタン
   next_yoko = 160;
   next_tate = 50;
