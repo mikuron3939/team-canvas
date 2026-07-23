@@ -31,6 +31,7 @@ PImage start_logo;
 PImage opImg;
 PImage[] charaImg = new PImage[4];
 PImage[] selectImgs = new PImage[4];//選択肢用
+PImage moneyImg;
 PImage targetImg;
 PImage dartHandImg;
 PImage[] trainingImgs = new PImage[3];//筋トレ用
@@ -38,7 +39,10 @@ PImage[] trainingImgs = new PImage[3];//筋トレ用
 void setup() {
   size(800, 600);
   textAlign(CENTER, CENTER);
-  PFont font = createFont("MS Gothic", 24); //日本語でも文字化けしないように
+  
+  
+//フォント
+  PFont font = createFont("KiwiMaru-Regular.ttf",24);
   textFont(font);
   //画像の読み込み
   start_image = loadImage("start_image.png");
@@ -55,6 +59,8 @@ void setup() {
   selectImgs[1] = loadImage("kari1.png");
   selectImgs[2] = loadImage("kari2.png");
   selectImgs[3] = loadImage("kari3.png");
+  
+  moneyImg = loadImage("money.png");
   
   targetImg = loadImage("target.png");
   dartHandImg = loadImage("darts_hand.png");

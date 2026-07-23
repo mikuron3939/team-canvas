@@ -30,8 +30,11 @@ void HomeView() {
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
   fill(50);
   textSize(35);
+  if (charaImg != null) { //画像が正しく読み込めていれば
+      image(moneyImg,570 , 10, 50, 50);
+    }
   //nf()で使うことで3桁区切りのカンマを自動で
-  text("所持金:￥" + nf(money, 0), width - 30, 20); 
+  text("￥"+ nf(money, 0), width - 30, 20); 
   textAlign(CENTER, CENTER);
   //右上に体重を表示
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
