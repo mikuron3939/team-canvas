@@ -11,6 +11,10 @@ float kabe_tate = 60;
 int mutekiTimer = 0; //無敵時間タイマー
 boolean isHit = false;
 
+//落とし穴
+float anaX,ana_yoko = 200;
+boolean isAnaSpawned = false;
+
 // ゴールに関する変数
 float goalX;//ゴールテープのX座標
 float goalLine = 10000;//ゴールまでの距離
@@ -38,6 +42,9 @@ void resetRace(){
   isDrinkUsed = false;
   drinkTimer = 0;
   drinkBoost = 0;
+  
+  anaX = width + 500;
+  isAnaSpawned = false;
 }
 //---レース画面---
 void RaceView() {
@@ -59,6 +66,29 @@ void RaceView() {
       drinkBoost = 0; // タイマー終了で加速終了
     }
   }
+  //落とし穴
+  if (!isGoalSpawned) {
+    anaX -= currentSpeed;
+    if (anaX < -ana_yoko) {
+      anaX = width + random(300, 700); //一定間隔で穴が出現
+      isAnaSpawned = false;
+    }
+    //地面の描画
+    stroke(80);
+    strokeWeight(3);
+    line(0, 450, anaX, 450);//穴の手前までの地面
+    line(anaX + ana_yoko, 450, width, 450);//穴の先の地面
+
+    //穴の暗い部分を描画
+    fill(20);
+    noStroke();
+    rect(anaX, 450, ana_yoko, 150);
+  } else {
+    // ゴール後は普通の地面を描く
+    stroke(80);
+    strokeWeight(3);
+    line(0, 450, width, 450);
+  }
   //走行距離のカウント
   if (!isGoalSpawned) {//ゴールしてないとき
     runDistance += currentSpeed;
@@ -70,10 +100,34 @@ void RaceView() {
   //プレイヤーのジャンプ処理
   playerV += gravity;
   playerY += playerV;
+
+  //プレイヤーの左端・右端の座標
+  float playerLeft = playerX - 25;
+  float playerRight = playerX + 25;
+  
+  //穴の右端（先のX座標）
+  float anaRight = anaX + ana_yoko;
+  //判定：プレイヤーの左端がすでに穴の始まりを超えているか
+  boolean isFalling = (playerLeft >= anaX && playerLeft <= anaRight && !isGoalSpawned);
+  
   if (playerY >= 450) {
-    playerY = 450;
-    playerV = 0;
-    isGround = true;
+    if(isFalling){
+      isGround = false;
+      
+      if(anaRight > playerRight){
+        playerV = 10;
+      }else {
+        playerV = 50;
+      }
+      
+      if(playerY > 700){
+        gameState = 9;
+      }
+    }else{
+      playerY = 450;
+      playerV = 0;
+      isGround = true;
+    }
   }
   //無敵タイマーのカウントダウン
   if (mutekiTimer > 0) {
@@ -126,7 +180,7 @@ void RaceView() {
       gameState = 3;
     }
   }
-  // UI表示
+  //UI表示
   fill(50);
   textSize(20);
   textAlign(LEFT, TOP);
