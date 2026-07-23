@@ -38,7 +38,12 @@ void DartsView(){
   if(targetImg != null){
     image(targetImg,targetX,targetY,target_yoko,target_tate);
   }
-  imageMode(CORNER);
+  if (!isDartsFinished && dartHandImg != null) {
+    //左下の位置
+    image(dartHandImg, 50, 600, 400, 400);
+    imageMode(CORNER);
+  }
+  
   
   //下部のタイミングゲージの描画
   //普通の黄色
@@ -76,13 +81,6 @@ void DartsView(){
     fill(255, 0, 0);
     noStroke();
     ellipse(dartX, dartY, 8, 8);
-  }
-  
-  if (!isDartsFinished && dartHandImg != null) {
-    imageMode(CENTER);
-    //右下の位置
-    image(dartHandImg, 80, 500, 300, 300);
-    imageMode(CORNER);
   }
   
   //結果テキストと案内表示

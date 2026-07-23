@@ -1,14 +1,15 @@
 //---レースゲーム用の変数---
 float playerX, playerY, playerV;//プレイヤーの位置と縦速度
-float playerBack =0;//プレイヤーのノックバック
 float gravity = 0.8;//重力
+int slowTimer = 0;
 boolean isGround = true; //地面にいるか
 
 float kabeX, kabeY;//障害物の位置
-float kabeSpeed = 6;    //障害物の速度
+float kabeSpeed = 10;//障害物の速度
 float kabe_yoko = 30;       
 float kabe_tate = 60;       
-int mutekiTimer = 0; // ノックバック後の無敵時間タイマー
+int mutekiTimer = 0; //無敵時間タイマー
+boolean isHit = false;
 
 // ゴールに関する変数
 float goalX;//ゴールテープのX座標
@@ -29,8 +30,10 @@ void resetRace(){
   kabeX = width + 200;
   kabeY = 450;
   mutekiTimer = 0;
+  slowTimer = 0;
   runDistance = 0;
   isGoalSpawned = false;
+  isHit = false;
   
   isDrinkUsed = false;
   drinkTimer = 0;
@@ -43,7 +46,10 @@ void RaceView() {
   line(0, 450, width, 450);//地面
   //ぶつかった時に減速
   float currentSpeed = kabeSpeed + drinkBoost;
-  if (mutekiTimer > 0) {
+  if(slowTimer > 0){
+    currentSpeed = 2.0;
+    slowTimer--;
+  } else if (mutekiTimer > 0) {
     currentSpeed = 1.5; 
   }
   //ドリンクアイテムの処理
@@ -69,18 +75,6 @@ void RaceView() {
     playerV = 0;
     isGround = true;
   }
-  //ノックバック
-  playerX += playerBack; //ノックバック速度
-  if (mutekiTimer > 0) {
-    playerBack *= 0.85; 
-  } else {
-    //通常時に元の位置より後ろにいたら、前に戻る
-    playerBack = 0;
-    if (playerX < 400) {
-      playerX += 1.5;
-      if (playerX > 400) playerX = 400;
-    }
-  }
   //無敵タイマーのカウントダウン
   if (mutekiTimer > 0) {
     mutekiTimer--;
@@ -92,28 +86,28 @@ void RaceView() {
 //--- 障害物の処理 ---
   if (!isGoalSpawned) {
     kabeX -= currentSpeed;
-    if (kabeX < -kabe_yoko) {
+    if (kabeX < -max(kabe_yoko,kabe_tate)) {
       kabeX = width + random(150, 400);
+      isHit = false;
     }
     // 障害物の描画
     fill(50);
     noStroke();
-    rect(kabeX, kabeY - kabe_tate, kabe_yoko, kabe_tate);
+    if(!isHit){
+      rect(kabeX, kabeY - kabe_tate, kabe_yoko, kabe_tate);
+    }else{
+      rect(kabeX, kabeY - 20, kabe_tate, 20);
+    } 
     
     //当たり判定(無敵時間中でないとき)
     if (mutekiTimer == 0) {
       if (kabeX < playerX + 25 && kabeX + kabe_yoko > playerX - 25) {
         if (playerY > kabeY - kabe_tate){
-          //ノックバック発生
-          playerBack = -30;//左に吹き飛ばす
-          kabeX = playerX + 30;
+          //障害物にあたったとき
+          slowTimer = 60;
           mutekiTimer = 60;//約1秒間の無敵時間
+          isHit =  true;
         }
-      }
-    }
-    if (mutekiTimer > 0 && kabeX < playerX + 25 && kabeX + kabe_yoko > playerX - 25){
-      if (playerY > kabeY - kabe_tate) {
-        playerX = kabeX - 25; // 壁の左端に密着させる
       }
     }
   }

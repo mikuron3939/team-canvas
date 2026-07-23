@@ -71,7 +71,7 @@ void setup() {
 }
 
 void draw() {
-  background(0,50,200); //画面の背景色をクリア
+  background(255); //画面の背景色をクリア
   if (gameState == 0) {
     StartView();
   } else if (gameState == 1) {
