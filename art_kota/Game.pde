@@ -32,6 +32,7 @@ PImage opImg;
 PImage[] charaImg = new PImage[4];
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage moneyImg;
+PImage calenderImg;
 PImage targetImg;
 PImage dartHandImg;
 PImage[] trainingImgs = new PImage[3];//筋トレ用
@@ -56,11 +57,12 @@ void setup() {
   charaImg[3] = loadImage("50kg.png");
   
   selectImgs[0] = loadImage("manjaro.png");
-  selectImgs[1] = loadImage("kari1.png");
+  selectImgs[1] = loadImage("training.png");
   selectImgs[2] = loadImage("kari2.png");
   selectImgs[3] = loadImage("kari3.png");
   
   moneyImg = loadImage("money.png");
+  calenderImg = loadImage("calender.png");
   
   targetImg = loadImage("target.png");
   dartHandImg = loadImage("darts_hand.png");

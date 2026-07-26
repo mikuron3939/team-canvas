@@ -21,10 +21,13 @@ void HomeView() {
   }
   
   //左上に残りターン数
+   if (charaImg != null) { //画像が正しく読み込めていれば
+      image(calenderImg,10 , 10, 100, 100);
+    }
   textAlign(LEFT, TOP);
   fill(250, 50, 50);
   textSize(26);
-  text("残り日数:" + turnCount + "日", 30, 20);
+  text("残り:" + turnCount + "週", 15, 100);
   
   //右上の所持金表示
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
@@ -40,7 +43,7 @@ void HomeView() {
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
   fill(50);
   textSize(35);
-  text("体重:" + weight + "kg", width - 50, 60); 
+  text("体重:" + weight + "kg", width - 30, 60); 
   textAlign(CENTER, CENTER);
 
   //ホーム画面の4つの丸ボタンの設定
@@ -60,7 +63,10 @@ void HomeView() {
     if (selectImgs[i] != null) {//画像が読み込めていたら
       if(i == 0){
         fill(230,0,230);
-      }else{
+      }else if(i == 1){
+        fill(0,255,50);
+      }
+      else{
         fill(255, 255, 255);
       }
       ellipse(circleX[i], circleY, circleR, circleR);
