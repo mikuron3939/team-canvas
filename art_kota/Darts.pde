@@ -35,13 +35,13 @@ void resetDarts(){
 void DartsView(){
   //的の描画
   imageMode(CENTER);
-  if(targetImgs[0] != null && weight >= 100){
+  if(weight >= 100){
     image(targetImgs[0],targetX,targetY,target_yoko,target_tate);
-  }else if(targetImgs[1] != null && weight >= 80){
+  }else if(weight >= 80){
     image(targetImgs[1],targetX,targetY,target_yoko,target_tate);
-  }else if(targetImgs[2] != null && weight >= 65){
+  }else if(weight >= 65){
     image(targetImgs[2],targetX,targetY,target_yoko,target_tate);
-  }else if(targetImgs[3] != null){
+  }else{
     image(targetImgs[3],targetX,targetY,target_yoko,target_tate);
   }
   if (!isDartsFinished && dartHandImg != null) {
@@ -99,13 +99,11 @@ void DartsView(){
     textSize(40);
     text(dartsResultStr, width / 2, targetY / 2);
     
-    fill(50);
+    fill(255,255,0);
     textSize(20);
     text("画面をクリックでホームに戻る", width / 2, 580);
   }else {
-    if(dartTextImg != null){
-      image(dartTextImg,width * 0.85,480,300,300);
-  }
+    image(dartTextImg,width * 0.85,480,300,300);
     fill(0,0,255);
     textSize(15);
     text("Best", width * 0.39, 520);

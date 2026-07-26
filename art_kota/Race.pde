@@ -48,9 +48,7 @@ void resetRace(){
 }
 //---レース画面---
 void RaceView() {
-  stroke(80);
-  strokeWeight(3);
-  line(0, 450, width, 450);//地面
+  image(raceBackImg,0 , 0, width, height);
   //ぶつかった時に減速
   float currentSpeed = kabeSpeed + drinkBoost;
   if(slowTimer > 0){
@@ -73,16 +71,10 @@ void RaceView() {
       anaX = width + random(300, 700); //一定間隔で穴が出現
       isAnaSpawned = false;
     }
-    //地面の描画
-    stroke(80);
-    strokeWeight(3);
-    line(0, 450, anaX, 450);//穴の手前までの地面
-    line(anaX + ana_yoko, 450, width, 450);//穴の先の地面
-
     //穴の暗い部分を描画
     fill(20);
     noStroke();
-    rect(anaX, 450, ana_yoko, 150);
+    ellipse(anaX, 450, 60, 20);
   } else {
     // ゴール後は普通の地面を描く
     stroke(80);
@@ -144,15 +136,14 @@ void RaceView() {
       kabeX = width + random(150, 400);
       isHit = false;
     }
-    // 障害物の描画
-    fill(50);
-    noStroke();
+    //障害物の描画
+    imageMode(CORNER);
+    //通常時の障害物画像
     if(!isHit){
-      rect(kabeX, kabeY - kabe_tate, kabe_yoko, kabe_tate);
-    }else{
-      rect(kabeX, kabeY - 20, kabe_tate, 20);
-    } 
-    
+       image(hardleImg, kabeX-75, kabeY - 90, 130, 130);fill(50);
+    }else{//ぶつかった後
+        image(hardle_hitImg, kabeX-75, kabeY - 85, 130, 130);
+    }
     //当たり判定(無敵時間中でないとき)
     if (mutekiTimer == 0) {
       if (kabeX < playerX + 25 && kabeX + kabe_yoko > playerX - 25) {

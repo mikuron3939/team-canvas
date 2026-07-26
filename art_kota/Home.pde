@@ -3,27 +3,17 @@ void HomeView() {
   //中央のキャラクター
   imageMode(CORNER);
   if(weight <= 50){
-    if (charaImg != null) { //画像が正しく読み込めていれば
       image(charaImg[3],0 , 0, width, height);
-    }
   }else if(weight <= 65){
-    if (charaImg != null) { //画像が正しく読み込めていれば
       image(charaImg[2],0 , 0, width, height);
-    }
   }else if(weight <= 80){
-    if (charaImg != null) { //画像が正しく読み込めていれば
       image(charaImg[1],0 , 0, width, height);
-    }
   }else{
-    if (charaImg != null) { //画像が正しく読み込めていれば
       image(charaImg[0],0 , 0, width, height);
-      }
   }
   
   //左上に残りターン数
-   if (charaImg != null) { //画像が正しく読み込めていれば
-      image(calenderImg,10 , 10, 100, 100);
-    }
+  image(calenderImg,10 , 10, 100, 100);
   textAlign(LEFT, TOP);
   fill(250, 50, 50);
   textSize(26);
@@ -33,9 +23,7 @@ void HomeView() {
   textAlign(RIGHT, TOP); //右上を基準に文字を書く設定に変更
   fill(50);
   textSize(35);
-  if (charaImg != null) { //画像が正しく読み込めていれば
-      image(moneyImg,570 , 10, 50, 50);
-    }
+  image(moneyImg,570 , 10, 50, 50);
   //nf()で使うことで3桁区切りのカンマを自動で
   text("￥"+ nf(money, 0), width - 30, 20); 
   textAlign(CENTER, CENTER);
@@ -60,18 +48,16 @@ void HomeView() {
     float d = dist(mouseX, mouseY, circleX[i], circleY);
     
     imageMode(CENTER);
-    if (selectImgs[i] != null) {//画像が読み込めていたら
-      if(i == 0){
-        fill(230,0,230);
-      }else if(i == 1){
-        fill(0,255,50);
-      }
-      else{
-        fill(255, 255, 255);
-      }
-      ellipse(circleX[i], circleY, circleR, circleR);
-      image(selectImgs[i], circleX[i], circleY, circleR, circleR);
+    if(i == 0){
+      fill(230,0,230);
+    }else if(i == 1){
+      fill(0,255,50);
     }
+    else{
+      fill(255, 255, 255);
+    }
+    ellipse(circleX[i], circleY, circleR, circleR);
+    image(selectImgs[i], circleX[i], circleY, circleR, circleR);
     
     if (d < circleR / 2) {
       noStroke();
@@ -112,9 +98,7 @@ void HomeView() {
   //OP
   if (isFirst){
     imageMode(CORNER);
-    if (charaImg != null) { //画像が正しく読み込めていれば
-      image(opImg,0 , 0, width, height);
-    }
+    image(opImg,0 , 0, width, height);
     //画面全体を薄い黒で覆う
     fill(0, 0, 0, 100); 
     noStroke();

@@ -37,6 +37,9 @@ PImage[] targetImgs = new PImage[4];
 PImage dartHandImg;
 PImage dartTextImg;
 PImage[] trainingImgs = new PImage[3];//筋トレ用
+PImage hardleImg;
+PImage hardle_hitImg;
+PImage raceBackImg;
 
 void setup() {
   size(800, 600);
@@ -76,6 +79,10 @@ void setup() {
   trainingImgs[0] = loadImage("training1.png");
   trainingImgs[1] = loadImage("training2.png");
   trainingImgs[2] = loadImage("training3.png");
+  
+  hardleImg = loadImage("hardle.png");
+  hardle_hitImg = loadImage("hardleHit.png");
+  raceBackImg = loadImage("raceBack.png");
   
   //進むボタン
   next_yoko = 160;
