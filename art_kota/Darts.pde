@@ -35,17 +35,26 @@ void resetDarts(){
 void DartsView(){
   //的の描画
   imageMode(CENTER);
-  if(targetImg != null){
-    image(targetImg,targetX,targetY,target_yoko,target_tate);
+  if(targetImgs[0] != null && weight >= 100){
+    image(targetImgs[0],targetX,targetY,target_yoko,target_tate);
+  }else if(targetImgs[1] != null && weight >= 80){
+    image(targetImgs[1],targetX,targetY,target_yoko,target_tate);
+  }else if(targetImgs[2] != null && weight >= 65){
+    image(targetImgs[2],targetX,targetY,target_yoko,target_tate);
+  }else if(targetImgs[3] != null){
+    image(targetImgs[3],targetX,targetY,target_yoko,target_tate);
   }
   if (!isDartsFinished && dartHandImg != null) {
     //左下の位置
     image(dartHandImg, 50, 600, 400, 400);
-    imageMode(CORNER);
   }
   
   
   //下部のタイミングゲージの描画
+  //外枠
+  fill(255,0,0);
+  noStroke();
+  rect(meterX-5, meterY-5, meter_yoko+10, meter_tate+10, 5);
   //普通の黄色
   fill(240, 240, 100);
   noStroke();
@@ -87,16 +96,19 @@ void DartsView(){
   textAlign(CENTER, CENTER);
   if (isDartsFinished){
     fill(dartsResultColor);
-    textSize(36);
+    textSize(40);
     text(dartsResultStr, width / 2, targetY / 2);
     
     fill(50);
     textSize(20);
     text("画面をクリックでホームに戻る", width / 2, 580);
-  } else {
-    fill(50);
-    textSize(22);
-    text("タイミングよく【SPACEキー】を押せ！", width / 2, 50);
+  }else {
+    if(dartTextImg != null){
+      image(dartTextImg,width * 0.85,480,300,300);
+  }
+    fill(0,0,255);
+    textSize(15);
+    text("Best", width * 0.39, 520);
   }
 }
 
@@ -118,7 +130,6 @@ void stopDartsBar(){
     //ほぼ中心に刺さる
     dartX = targetX + random(-30,30);
     dartY = targetY + random(50,80);
-    weight -= 5;
   } 
   else if(scoreRatio < 0.6){
     //大成功
@@ -129,7 +140,6 @@ void stopDartsBar(){
     float signY = random(1) < 0.5 ? -1 : 1;
     dartX = targetX + signX * random(target_yoko * 0.03, target_yoko * 0.2);
     dartY = targetY + signY * random(target_tate * 0.03, target_tate * 0.2);
-    weight -= 12;
   } 
   else{
     //普通
@@ -140,6 +150,5 @@ void stopDartsBar(){
     float signY = random(1) < 0.5 ? -1 : 1;
     dartX = targetX + signX * random(target_yoko * 0.3, target_yoko * 0.3);
     dartY = targetY + signY * random(target_tate * 0.3, target_tate * 0.3);
-    weight -= 10;
   }
 }

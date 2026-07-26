@@ -33,8 +33,9 @@ PImage[] charaImg = new PImage[4];
 PImage[] selectImgs = new PImage[4];//選択肢用
 PImage moneyImg;
 PImage calenderImg;
-PImage targetImg;
+PImage[] targetImgs = new PImage[4];
 PImage dartHandImg;
+PImage dartTextImg;
 PImage[] trainingImgs = new PImage[3];//筋トレ用
 
 void setup() {
@@ -64,8 +65,13 @@ void setup() {
   moneyImg = loadImage("money.png");
   calenderImg = loadImage("calender.png");
   
-  targetImg = loadImage("target.png");
+  targetImgs[0] = loadImage("target100kg.png");
+  targetImgs[1] = loadImage("target80kg.png");
+  targetImgs[2] = loadImage("target65kg.png");
+  targetImgs[3] = loadImage("target50kg.png");
+  
   dartHandImg = loadImage("darts_hand.png");
+  dartTextImg = loadImage("dartText.png");
   
   trainingImgs[0] = loadImage("training1.png");
   trainingImgs[1] = loadImage("training2.png");
@@ -149,6 +155,13 @@ void mousePressed() {
   //ダーツ
   else if (gameState == 4){
     if(isDartsFinished){
+        if (dartsResultStr.equals("BAD")) {
+        weight -= 5;
+      } else if (dartsResultStr.equals("PERFECT!!")) {
+        weight -= 12;
+      } else if (dartsResultStr.equals("NICE!")) {
+        weight -= 10;
+      }
       gameState = 1;
       isNextWeek = true;
     }
