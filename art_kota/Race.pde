@@ -4,6 +4,9 @@ float gravity = 0.8;//重力
 int slowTimer = 0;
 boolean isGround = true; //地面にいるか
 boolean isRaceStarted = false;
+boolean hasDoubleJump = false;//能力を買ったか
+boolean canDoubleJump = false;
+boolean isSecondJumping = false;//２回目のジャンプを行ったか
 //障害物の変数
 float kabeX, kabeY;//障害物の位置
 float kabeSpeed = 10;//障害物の速度
@@ -64,6 +67,9 @@ void resetRace(){
   
   anaX = width + 200;
   isAnaSpawned = false;
+  
+  canDoubleJump = false;
+  isSecondJumping = false;
 
 }
 //---レース画面---
@@ -173,6 +179,7 @@ void RaceView() {
       playerY = 450;
       playerV = 0;
       isGround = true;
+      canDoubleJump = true;
     }
   }
   //無敵タイマーのカウントダウン
@@ -185,6 +192,9 @@ void RaceView() {
     kabeX -= currentSpeed;
     if (kabeX < -max(kabe_yoko,kabe_tate)) {
       kabeX = width + random(150, 400);
+      if (abs(kabeX - anaX) < 400) {
+        kabeX = anaX + random(400, 700);
+      }
       isHit = false;
     }
     //障害物の描画
@@ -226,11 +236,11 @@ void RaceView() {
   //左側のスタートダッシュ用バー---
   if (!isRaceStarted) {
     // 画面中央の案内メッセージ
-    fill(250, 100, 100);
-    textSize(26);
+    fill(255, 255, 100);
+    textSize(40);
     textAlign(CENTER, CENTER);
     if (!isStartDashed) {
-      text("【SPACE】を押してベストタイミングで止めろ！", width / 2, 100);
+      text("【SPACE】でスタートダッシュを決めろ！", width / 2, 100);
     }
     
     // 判定結果の表示
@@ -306,9 +316,10 @@ void RaceView() {
   //進行度の表示
   float progress = min(runDistance / goalLine, 1.0);
   text("進捗:" + int(progress * 100) + "%", 30, 20);
-  
-  textAlign(CENTER, CENTER);
-  text("【SPACEキー】でジャンプ！", width / 2, 50);
+  if(isRaceStarted){
+    textAlign(CENTER, CENTER);
+    text("【SPACEキー】でジャンプ！", width / 2, 50);
+  }
   
   //ドリンクアイテムのUI
   fill(50);
@@ -320,10 +331,22 @@ void RaceView() {
     else drinkStatus = "【E】キーで加速";
   }
   text("ドリンク:" + drinkStatus, width - 30, 20);
-  // ドリンク効果中の演出（バーを表示するなど）
-  if (drinkTimer > 0){
+  //ドリンク効果中の演出（バーを表示するなど）
+  if (drinkTimer > 0 && isRaceStarted){
     noStroke(); fill(100, 255, 100, 150); // 薄い緑色
     rect(30, 50, drinkTimer, 10, 5); // 残り時間バー
   }
+  fill(50);
+  textSize(16);
+  textAlign(RIGHT, TOP);
+  String jumpStatus = "なし";
+  if (hasDoubleJump) {
+    if (canDoubleJump || isGround) {
+      jumpStatus = "【使用可能】";
+    } else {
+      jumpStatus = "【使用済み】";
+    }
+  }
+  text("二段ジャンプ: " + jumpStatus, width - 30, 50);
   textAlign(CENTER, CENTER); // textAlignを元に戻す
 }

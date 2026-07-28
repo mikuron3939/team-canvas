@@ -14,16 +14,6 @@ int weight = 100;
 //OP
 boolean isFirst = true;
 boolean isNextWeek = false;
-//shop
-//shoes
-int shoesLevel = 0;//靴のランク
-int[] shoesPrices = {0,5000,10000,15000};//靴の価格
-float jumpPower = 0;//最終的なジャンプ力
-float nextX,nextY,next_yoko,next_tate;
-//drink
-int drinkLevel = 0;
-int[] drinkPrices = {0,5000,10000,15000};
-boolean isDrinkUsed = false;
 
 //画像を保存する変数
 PImage start_image;
@@ -44,8 +34,7 @@ PImage raceBackImg;
 void setup() {
   size(800, 600);
   textAlign(CENTER, CENTER);
-  
-  
+
 //フォント
   PFont font = createFont("KiwiMaru-Regular.ttf",24);
   textFont(font);
@@ -207,9 +196,9 @@ void mousePressed() {
   else if (gameState == 8) {
     float botan_yoko = 180;
     float botan_tate = 80;
-    float shoesY = height * 0.3;
+    float shoesY = 150;
     
-    // 3つの靴ボタンの判定
+    //3つの靴ボタンの判定
     for (int i = 0; i < 3; i++) {
       float botanX = 60 + i * (botan_yoko + 40);
       if (mouseX > botanX && mouseX < botanX + botan_yoko && mouseY > shoesY && mouseY < shoesY + botan_tate) {
@@ -222,7 +211,8 @@ void mousePressed() {
         }
       }
     }
-    float drinkY = height * 0.6;
+    //3つのドリンクボタンの判定
+    float drinkY = 290;
     for (int i = 0; i < 3; i++) {
       float botanX = 60 + i * (botan_yoko + 40);
       if (mouseX > botanX && mouseX < botanX + botan_yoko && mouseY > drinkY && mouseY < drinkY + botan_tate) {
@@ -234,6 +224,20 @@ void mousePressed() {
           money -= price;
           drinkLevel = targetLevel;
         }
+      }
+    }
+    //特殊能力
+    float itemSelect_yoko = 180;
+    float itemSelect_tate = 60;
+    float jumpItemX = 60;
+    float jumpY = 420;
+    int jumpPrice = 3000;
+  
+    if (mouseX >= jumpItemX && mouseX <= jumpItemX + itemSelect_yoko &&
+        mouseY >= jumpY && mouseY <= jumpY + itemSelect_tate) {
+      if (!ownDoubleJump && money >= jumpPrice) {
+        money -= jumpPrice;
+        ownDoubleJump = true; // 購入完了！
       }
     }
     //レースへ進むボタン
@@ -284,7 +288,13 @@ void keyPressed(){
         if(isGround){
           playerV = -jumpPower;
           isGround = false;
+          canDoubleJump = true;
         }
+        else if(ownDoubleJump && canDoubleJump) {
+          playerV = -jumpPower + jumpPower/3; // 空中ジャンプの強さ
+          canDoubleJump = false; // 使い切ったので消す
+          isSecondJumping = true;
+    }
       }
       else if (key == 'e' || key == 'E'){
       //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
