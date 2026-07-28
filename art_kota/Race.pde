@@ -3,7 +3,8 @@ float playerX, playerY, playerV;//プレイヤーの位置と縦速度
 float gravity = 0.8;//重力
 int slowTimer = 0;
 boolean isGround = true; //地面にいるか
-
+boolean isRaceStarted = false;
+//障害物の変数
 float kabeX, kabeY;//障害物の位置
 float kabeSpeed = 10;//障害物の速度
 float kabe_yoko = 30;       
@@ -20,6 +21,15 @@ float goalX;//ゴールテープのX座標
 float goalLine = 10000;//ゴールまでの距離
 float runDistance = 0;//走った距離
 boolean isGoalSpawned = false;
+
+//スタートダッシュの変数
+int startDashTimer = 0;//スタートダッシュの受付用タイマー
+String startMessage = "";//「PERFECT!」などの表示用
+int startDashColor;
+boolean isStartDashed = false;//判定が済んだか
+int DashCountDown = 0;
+float raceBar = 0;
+int raceBarDir = 1;
 
 //ドリンクアイテム
 int drinkTimer = 0;//ドリンクの効果時間
@@ -43,19 +53,66 @@ void resetRace(){
   drinkTimer = 0;
   drinkBoost = 0;
   
-  anaX = width + 500;
+  startDashTimer = 600;
+  startMessage = "";
+  isStartDashed = false;
+  isRaceStarted = false;
+  DashCountDown = 0;
+  
+  raceBar = 0;
+  raceBarDir = 1;
+  
+  anaX = width + 200;
   isAnaSpawned = false;
+
 }
 //---レース画面---
 void RaceView() {
+  imageMode(CORNER);
   image(raceBackImg,0 , 0, width, height);
-  //ぶつかった時に減速
-  float currentSpeed = kabeSpeed + drinkBoost;
-  if(slowTimer > 0){
-    currentSpeed = 2.0;
-    slowTimer--;
-  } else if (mutekiTimer > 0) {
-    currentSpeed = 1.5; 
+  // 1. スタートダッシュ前の待機中処理
+  if (!isRaceStarted) {
+    if(!isStartDashed){
+    //まだスペースを押していない（3秒間の受付中）
+      if (startDashTimer > 0) {
+        startDashTimer--;
+        //バーを高速で往復させる処理（かける数字で速さを調節）
+        raceBar += 0.08 * raceBarDir;
+        if (raceBar >= 1.0) {
+          raceBar = 1.0;
+          raceBarDir = -1; // 下向きに反転
+        } else if (raceBar <= 0.0) {
+          raceBar = 0.0;
+          raceBarDir = 1;  // 上向きに反転
+        }
+      } else {
+      // 時間切れで自動的に「LATE」扱いでレーススタート
+          isStartDashed = true;
+          startMessage = "LATE...";
+          startDashColor = color(150, 150, 150);
+          drinkBoost = 0;
+          DashCountDown = 180;
+        }
+     }else{
+       if(DashCountDown > 0){
+         DashCountDown--;
+      }else{
+          isRaceStarted = true; 
+        }
+      }
+    }
+
+  // 速度の計算（レースが始まっていないときはスピード0）
+  float currentSpeed = 0;
+  if (isRaceStarted) {
+    currentSpeed = kabeSpeed + drinkBoost;
+    //ぶつかった時に減速
+    if(slowTimer > 0){
+      currentSpeed = 2.0;
+      slowTimer--;
+    } else if (mutekiTimer > 0) {
+      currentSpeed = 1.5; 
+    }
   }
   //ドリンクアイテムの処理
   if (drinkTimer > 0){
@@ -64,8 +121,14 @@ void RaceView() {
       drinkBoost = 0; // タイマー終了で加速終了
     }
   }
+  //スタートダッシュタイマー
+  if (startDashTimer > 0) {
+    startDashTimer--;
+  }
+  //最初の一定距離の間は、穴も障害物も出さない
+  boolean isSafeZone = (runDistance < 500);
   //落とし穴
-  if (!isGoalSpawned) {
+  if (!isGoalSpawned && !isSafeZone){
     anaX -= currentSpeed;
     if (anaX < -ana_yoko) {
       anaX = width + random(300, 700); //一定間隔で穴が出現
@@ -74,7 +137,7 @@ void RaceView() {
     //穴の暗い部分を描画
     fill(20);
     noStroke();
-    ellipse(anaX, 450, 60, 20);
+    ellipse(anaX+100, 450, 300, 20);
   } else {
     // ゴール後は普通の地面を描く
     stroke(80);
@@ -82,7 +145,7 @@ void RaceView() {
     line(0, 450, width, 450);
   }
   //走行距離のカウント
-  if (!isGoalSpawned) {//ゴールしてないとき
+  if (isRaceStarted && !isGoalSpawned) {//ゴールしてないとき
     runDistance += currentSpeed;
     if (runDistance >= goalLine) {
       isGoalSpawned = true;
@@ -92,27 +155,18 @@ void RaceView() {
   //プレイヤーのジャンプ処理
   playerV += gravity;
   playerY += playerV;
-
-  //プレイヤーの左端・右端の座標
-  float playerLeft = playerX - 25;
-  float playerRight = playerX + 25;
-  
+  // 穴の中心X座標
+  float anaCenterX = anaX + ana_yoko / 2;
   //穴の右端（先のX座標）
-  float anaRight = anaX + ana_yoko;
   //判定：プレイヤーの左端がすでに穴の始まりを超えているか
-  boolean isFalling = (playerLeft >= anaX && playerLeft <= anaRight && !isGoalSpawned);
-  
+  boolean isFalling = (playerX >= anaX && playerX <= anaX + ana_yoko && !isGoalSpawned);
   if (playerY >= 450) {
     if(isFalling){
       isGround = false;
-      
-      if(anaRight > playerRight){
-        playerV = 10;
-      }else {
-        playerV = 50;
-      }
-      
-      if(playerY > 700){
+      playerX += (anaCenterX - playerX)*0.2;
+      playerV = 15;
+
+      if(playerY > 600){
         gameState = 9;
       }
     }else{
@@ -125,12 +179,9 @@ void RaceView() {
   if (mutekiTimer > 0) {
     mutekiTimer--;
   }
-  fill(50,200,50);
-  noStroke();
-  rect(playerX - 25, playerY - 80, 50, 80);
   
 //--- 障害物の処理 ---
-  if (!isGoalSpawned) {
+  if (!isGoalSpawned && !isSafeZone) {
     kabeX -= currentSpeed;
     if (kabeX < -max(kabe_yoko,kabe_tate)) {
       kabeX = width + random(150, 400);
@@ -171,6 +222,83 @@ void RaceView() {
       gameState = 3;
     }
   }
+  
+  //左側のスタートダッシュ用バー---
+  if (!isRaceStarted) {
+    // 画面中央の案内メッセージ
+    fill(250, 100, 100);
+    textSize(26);
+    textAlign(CENTER, CENTER);
+    if (!isStartDashed) {
+      text("【SPACE】を押してベストタイミングで止めろ！", width / 2, 100);
+    }
+    
+    // 判定結果の表示
+    if (!startMessage.equals("")) {
+      fill(startDashColor);
+      textSize(35);
+      text(startMessage, width / 2, 150);
+    }
+    
+    // 画面左側に縦長のバーを描画
+    float barX = 80;
+    float barY = 180;
+    float barW = 40;
+    float barH = 250;
+    
+    // バーの枠
+    stroke(100);
+    strokeWeight(2);
+    fill(240);
+    rect(barX, barY, barW, barH);
+    
+    // 一番上の黄緑ゾーン（ベスト：上から0%〜20%のエリア）
+    noStroke();
+    fill(100, 255, 100);
+    rect(barX, barY, barW, barH * 0.2);
+    
+    // 現在位置を示すインジケーター（または動くバー）
+    float indicatorY = map(raceBar, 1.0, 0.0, barY, barY + barH);
+    
+    fill(50, 50, 250);
+    rect(barX - 5, indicatorY - 5, barW + 10, 10);
+    
+    fill(50);
+    textSize(14);
+    textAlign(LEFT, CENTER);
+    text("BEST", barX + barW + 10, barY + 25);
+    
+    //3・2・1のカウントダウン表示
+    if (isStartDashed && DashCountDown > 0) {
+      int countNum = ceil(DashCountDown / 60.0);
+      //画面全体を薄い黒で覆う
+      fill(0, 0, 0, 100); 
+      noStroke();
+      rect(0, 0, width, height);
+      fill(255, 50, 50); //赤色で強調
+      textSize(160);
+      textAlign(CENTER, CENTER);
+      text(countNum, width / 2, height / 2);
+    }
+  }
+  
+  //プレイヤーの描画
+  //穴に落ちている最中、隠れていくようにクリッピング領域を設定する
+  if (isFalling && playerY > 450) {
+  //地面（Y=450）より下にいく部分を消す
+    clip(0,0,width, 450);
+  }
+
+  //プレイヤー本体の描画
+  fill(50, 200, 50);
+  noStroke();
+  rect(playerX - 25, playerY - 80, 50, 80);
+
+  // クリッピングをかけた場合は、必ず元に戻す
+  if (isFalling && playerY > 450) {
+    noClip();
+  }
+  
   //UI表示
   fill(50);
   textSize(20);

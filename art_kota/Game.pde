@@ -1,6 +1,6 @@
 //画面の状態を管理する変数
 //（0ならスタート画面,1ならホーム画面,
-//2ならレース,3ならクリア,4ならダーツ,5なら筋トレ,8ならアイテム購入）
+//2レース,3クリア,4ダーツ,5筋トレ,6食制限,8ならアイテム購入）
 int gameState = 0;
 int turnCount = 5;//ターンの変数
 //ボタンの配置やサイズ
@@ -105,6 +105,8 @@ void draw() {
     DartsView();
   } else if (gameState == 5) {
     TrainingView();
+  } else if (gameState == 6) {
+    drawEat();
   } else if (gameState == 8) {
     ShopView();
   }
@@ -148,7 +150,12 @@ void mousePressed() {
           gameState = 5;
           turnCount--;
         }
-        else{
+        else if(i == 2){
+          resetEat();
+          gameState = 6;
+          turnCount--;
+        }
+        else {
           turnCount--;
         }
       }
@@ -180,6 +187,19 @@ void mousePressed() {
       weight -= 10;
       kabeSpeed += 1;
       gameState = 1; 
+      isNextWeek = true;
+    }
+  }
+  //食制限
+  else if (gameState == 6){
+    eatCheckClick();
+    if(isEatFinished){
+      if (score >= 200) {
+        weight -= 8; // 高得点なら体重がたくさん減る
+      } else {
+        weight -= 4;
+      }
+      gameState = 1;
       isNextWeek = true;
     }
   }
@@ -234,18 +254,49 @@ void mousePressed() {
   }
 }
 void keyPressed(){
-  if (gameState == 2 && key == ' ' && isGround){
-    playerV = -jumpPower;
-    isGround = false;
-  } else if (gameState == 2 && (key == 'e' || key == 'E')){
-    //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
-    if (drinkLevel > 0 && !isDrinkUsed && !isGoalSpawned && mutekiTimer == 0) {
-      isDrinkUsed = true;
-      drinkTimer = 180;//約3秒間
-      //レベルに応じて加速力を変える
-      if (drinkLevel == 1) drinkBoost = 3;//小加速
-      else if (drinkLevel == 2) drinkBoost = 6;//中加速
-      else if (drinkLevel == 3) drinkBoost = 10;//大加速
+  if (gameState == 2){
+    if(!isRaceStarted && !isStartDashed){
+      if (key == ' ') {
+        isStartDashed = true;
+        DashCountDown = 180;
+        //スタートダッシュに応じてブーストを決定
+        if(raceBar >=  0.8) {
+          startMessage = "SUPER START!!";
+          startDashColor = color(50, 255, 50);
+          drinkBoost = 10; // 強力な加速
+          drinkTimer = 360; // 約2秒持続
+        } else if (raceBar >= 0.4) {
+          startMessage = "GOOD START!";
+          startDashColor = color(50, 200, 50);
+          drinkBoost = 5; // 中くらいの加速
+          drinkTimer = 300;
+        } else {
+          startMessage = "LATE...";
+          startDashColor = color(150, 150, 150);
+          drinkBoost = 0; // 加速なし
+        }
+      }
+      return;
+    }
+      //通常ジャンプ
+    if (isRaceStarted) {  
+      if(key == ' '){
+        if(isGround){
+          playerV = -jumpPower;
+          isGround = false;
+        }
+      }
+      else if (key == 'e' || key == 'E'){
+      //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
+        if (drinkLevel > 0 && !isDrinkUsed && !isGoalSpawned && mutekiTimer == 0) {
+          isDrinkUsed = true;
+          drinkTimer = 180;//約3秒間
+          //レベルに応じて加速力を変える
+          if (drinkLevel == 1) drinkBoost = 3;//小加速
+          else if (drinkLevel == 2) drinkBoost = 6;//中加速
+          else if (drinkLevel == 3) drinkBoost = 10;//大加速
+        }
+      }
     }
   }
   else if (gameState == 4 && key == ' '){
