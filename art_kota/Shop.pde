@@ -1,9 +1,20 @@
+//shopの変数
+int shoesLevel = 0;//靴のランク
+int[] shoesPrices = {0,5000,10000,15000};//靴の価格
+float jumpPower = 0;//最終的なジャンプ力
+float nextX,nextY,next_yoko,next_tate;
+//drink
+int drinkLevel = 0;
+int[] drinkPrices = {0,5000,10000,15000};
+boolean isDrinkUsed = false;
+boolean ownDoubleJump = false;
+
 void ShopView() {
   background(40, 50, 60);//ショップの背景
   //Shopの名前
   fill(255);
   textSize(32);
-  text("ーーItem_Shopーー", width / 2, 50);
+  text("ーーShopーー", width / 2, 50);
   //所持金と現在の体重表示
   textSize(20);
   fill(255, 215, 0);
@@ -12,9 +23,10 @@ void ShopView() {
   text("体重:" + weight + "kg", width / 2, 130);
   
   float itemSelect_yoko = 180;
-  float itemSelect_tate = 70;
-  float shoesY = height * 0.3; //靴ボタンの縦位置
-  float drinkY = height * 0.6;
+  float itemSelect_tate = 60;
+  float shoesY = 150; //靴ボタンの縦位置
+  float drinkY = 290;
+  float jumpY = 420;
   
   //靴のラインナップ描画
   String[] shoesNames = {"サンダル", "スニーカー", "ランニングシューズ"};
@@ -104,6 +116,40 @@ void ShopView() {
     textSize(13);
     text(drinkPop[i], itemSelectX + itemSelect_yoko/2, drinkY + itemSelect_tate + 25);
   }
+  
+  //---二段ジャンプ能力の購入欄---
+  fill(255); 
+  textSize(18); 
+  textAlign(LEFT, CENTER);
+  text("▼特殊能力", 60, jumpY - 20);
+  textAlign(CENTER, CENTER);
+
+  float jumpItemX = 60; // 左端に配置
+  int jumpPrice = 10000; // 例：値段は3000円
+  
+  if (ownDoubleJump) {
+    fill(50, 150, 50); // 購入済み
+  } else if (money < jumpPrice) {
+    fill(100, 50, 50); // お金不足
+  } else {
+    fill(200, 100, 250); // 買えるとき（紫色のボタン）
+  }
+  stroke(255);
+  strokeWeight(2);
+  rect(jumpItemX, jumpY, itemSelect_yoko, itemSelect_tate, 10);
+
+  fill(255);
+  textSize(17);
+  text("二段ジャンプ", jumpItemX + itemSelect_yoko/2, jumpY + 18);
+  textSize(14);
+  if (ownDoubleJump) {
+    text("購入済み", jumpItemX + itemSelect_yoko/2, jumpY + 42);
+  } else {
+    text(jumpPrice + "円", jumpItemX + itemSelect_yoko/2, jumpY + 42);
+  }
+  fill(210);
+  textSize(12);
+  text("空中で2回ジャンプできる！", jumpItemX + itemSelect_yoko/2, jumpY + itemSelect_tate + 15);
   
   //現在の装備ステータス
   fill(255);
