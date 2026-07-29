@@ -7,6 +7,8 @@ boolean isRaceStarted = false;
 boolean hasDoubleJump = false;//能力を買ったか
 boolean canDoubleJump = false;
 boolean isSecondJumping = false;//２回目のジャンプを行ったか
+int raceTime = 0;
+int resultRaceTime = 0;
 //障害物の変数
 float kabeX, kabeY;//障害物の位置
 float kabeSpeed = 10;//障害物の速度
@@ -70,7 +72,9 @@ void resetRace(){
   
   canDoubleJump = false;
   isSecondJumping = false;
-
+  
+  raceTime = 0;
+  resultRaceTime = 0;
 }
 //---レース画面---
 void RaceView() {
@@ -230,8 +234,22 @@ void RaceView() {
     //プレイヤーがゴールテープを通過したらクリア
     if (playerX > goalX){
       gameState = 3;
+      resultRaceTime = raceTime;
     }
   }
+  
+  //タイマー
+  if (isRaceStarted && !isGoalSpawned && !isFalling) {
+    raceTime++; //レース中なら1フレームごとに＋1
+  }
+  // タイムを「秒」に変換（60フレームで割る）
+  float displayTime = raceTime / 60.0;
+  
+  // 画面にテキストとして描画
+  fill(255);
+  textSize(24);
+  textAlign(RIGHT, TOP);
+  text("TIME: " + nf(displayTime, 0, 2) + "秒", width - 30, 30);
   
   //左側のスタートダッシュ用バー---
   if (!isRaceStarted) {
