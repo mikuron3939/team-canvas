@@ -309,6 +309,29 @@ void RaceView() {
     noClip();
   }
   
+  //ブースト中の演出
+  if (drinkTimer > 0 && isRaceStarted && mutekiTimer == 0) {
+    noStroke();
+    // 残像1
+    fill(50, 200, 50, 150); 
+    rect(playerX - 25, playerY - 80, 50, 80);
+    // 残像2
+    fill(50, 200, 50, 100);  
+    rect(playerX - 50, playerY - 80, 50, 80);
+    
+    //線のスタイル設定
+    stroke(255, 200);
+    strokeWeight(4);
+    //ランダムな横線を複数本描く
+    for (int i = 0; i < 5; i++) {
+      //プレイヤーの少し後方から前へ向かって流れる線
+      float lineX = playerX - 60 + random(-100, 50);
+      float lineY = playerY - 30 + random(-80, 80);
+      float lineLength = random(30, 80);
+      line(lineX, lineY, lineX + lineLength, lineY);
+    }
+  }
+  
   //UI表示
   fill(50);
   textSize(20);
