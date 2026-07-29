@@ -14,19 +14,8 @@ int weight = 100;
 //OP
 boolean isFirst = true;
 boolean isNextWeek = false;
-<<<<<<< HEAD
 //shop
 //shoes
-int shoesLevel = 0;//靴のランク
-int[] shoesPrices = {0, 5000, 10000, 15000};//靴の価格
-float jumpPower = 0;//最終的なジャンプ力
-float nextX, nextY, next_yoko, next_tate;
-//drink
-int drinkLevel = 0;
-int[] drinkPrices = {0, 5000, 10000, 15000};
-boolean isDrinkUsed = false;
-=======
->>>>>>> 00c8c84c2ab73b3ff7db37f610ce45a00cfae69c
 
 //画像を保存する変数
 PImage start_image;
@@ -48,15 +37,8 @@ PImage raceBackImg;
 void setup() {
   size(800, 600);
   textAlign(CENTER, CENTER);
-
-<<<<<<< HEAD
-
   //フォント
   PFont font = createFont("KiwiMaru-Regular.ttf", 24);
-=======
-//フォント
-  PFont font = createFont("KiwiMaru-Regular.ttf",24);
->>>>>>> 00c8c84c2ab73b3ff7db37f610ce45a00cfae69c
   textFont(font);
   //画像の読み込み
   start_image = loadImage("start_image.png");
@@ -222,15 +204,9 @@ else if (gameState == 5){
   else if (gameState == 8) {
     float botan_yoko = 180;
     float botan_tate = 80;
-<<<<<<< HEAD
     float shoesY = height * 0.3;
-
-    // 3つの靴ボタンの判定
-=======
-    float shoesY = 150;
-    
+ 
     //3つの靴ボタンの判定
->>>>>>> 00c8c84c2ab73b3ff7db37f610ce45a00cfae69c
     for (int i = 0; i < 3; i++) {
       float botanX = 60 + i * (botan_yoko + 40);
       if (mouseX > botanX && mouseX < botanX + botan_yoko && mouseY > shoesY && mouseY < shoesY + botan_tate) {
@@ -291,6 +267,7 @@ else if (gameState == 5){
 }
 void keyPressed() {
   if (gameState == 2) {
+    //レース前
     if (!isRaceStarted && !isStartDashed) {
       if (key == ' ') {
         isStartDashed = true;
@@ -314,27 +291,22 @@ void keyPressed() {
       }
       return;
     }
+    //レース中
     //通常ジャンプ
-    if (isRaceStarted) {
+    if (isRaceStarted){
       if (key == ' ') {
         if (isGround) {
           playerV = -jumpPower;
           isGround = false;
           canDoubleJump = true;
+        } else if(ownDoubleJump && canDoubleJump) {
+            playerV = -jumpPower + jumpPower/3; // 空中ジャンプの強さ
+            canDoubleJump = false; // 使い切ったので消す
+            isSecondJumping = true;
         }
-<<<<<<< HEAD
-      } else if (key == 'e' || key == 'E') {
-        //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
-=======
-        else if(ownDoubleJump && canDoubleJump) {
-          playerV = -jumpPower + jumpPower/3; // 空中ジャンプの強さ
-          canDoubleJump = false; // 使い切ったので消す
-          isSecondJumping = true;
-    }
       }
       else if (key == 'e' || key == 'E'){
       //ドリンクを持ってる&まだ使っていない&ゴール前で、被弾中でない
->>>>>>> 00c8c84c2ab73b3ff7db37f610ce45a00cfae69c
         if (drinkLevel > 0 && !isDrinkUsed && !isGoalSpawned && mutekiTimer == 0) {
           isDrinkUsed = true;
           drinkTimer = 180;//約3秒間
@@ -345,16 +317,15 @@ void keyPressed() {
         }
       }
     }
-  } else if (gameState == 4 && key == ' ') {
+  }
+   else if (gameState == 4 && key == ' ') {
     if (!isDartsFinished) {
       stopDartsBar();
     }
   } else if (gameState == 5) {
-
     if (key == ' ') {
       trainingSpacePressed();
     }
-
     if (keyCode == ENTER || keyCode == RETURN) {
       stopTraining();
     }
