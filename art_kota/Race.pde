@@ -8,7 +8,7 @@ boolean hasDoubleJump = false;//能力を買ったか
 boolean canDoubleJump = false;
 boolean isSecondJumping = false;//２回目のジャンプを行ったか
 int raceTime = 0;
-int resultRaceTime = 0;
+float resultRaceTime = 0;
 //障害物の変数
 float kabeX, kabeY;//障害物の位置
 float kabeSpeed = 10;//障害物の速度
