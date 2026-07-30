@@ -53,8 +53,8 @@ void setup() {
 
   selectImgs[0] = loadImage("manjaro.png");
   selectImgs[1] = loadImage("training.png");
-  selectImgs[2] = loadImage("kari2.png");
-  selectImgs[3] = loadImage("kari3.png");
+  selectImgs[2] = loadImage("foods.png");
+  selectImgs[3] = loadImage("sauna.png");
 
   moneyImg = loadImage("money.png");
   calenderImg = loadImage("calender.png");
