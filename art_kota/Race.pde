@@ -309,18 +309,23 @@ void RaceView() {
       text(countNum, width / 2, height / 2);
     }
   }
-  
-  //プレイヤーの描画
+ 
   //穴に落ちている最中、隠れていくようにクリッピング領域を設定する
   if (isFalling && playerY > 450) {
   //地面（Y=450）より下にいく部分を消す
     clip(0,0,width, 450);
   }
 
-  //プレイヤー本体の描画
-  fill(50, 200, 50);
-  noStroke();
-  rect(playerX - 25, playerY - 80, 50, 80);
+  //プレイヤーの描画
+  if (weight <= 50) {
+    image(raceChara[3],playerX - 150, playerY - 140, 300, 150);
+  } else if (weight <= 65) {
+    image(raceChara[2],playerX - 150, playerY - 140, 300, 150);
+  } else if (weight <= 80) {
+    image(raceChara[1],playerX - 150, playerY - 140, 300, 150);
+  } else {
+    image(raceChara[0],playerX - 150, playerY - 140, 300, 150);
+  }
 
   // クリッピングをかけた場合は、必ず元に戻す
   if (isFalling && playerY > 450) {

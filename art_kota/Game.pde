@@ -33,6 +33,7 @@ PImage trainingBgImg;
 PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
+PImage[] raceChara = new PImage[4];//レースの走っている姿
 
 void setup() {
   size(800, 600);
@@ -72,6 +73,11 @@ void setup() {
   hardleImg = loadImage("hardle.png");
   hardle_hitImg = loadImage("hardleHit.png");
   raceBackImg = loadImage("raceBack.png");
+  
+  raceChara[0] = loadImage("race100kg.png");
+  raceChara[1] = loadImage("race80kg.png");
+  raceChara[2] = loadImage("race65kg.png");
+  raceChara[3] = loadImage("race50kg.png");
 
   //進むボタン
   next_yoko = 160;
