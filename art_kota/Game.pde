@@ -96,6 +96,8 @@ void draw() {
     TrainingView();
   } else if (gameState == 6) {
     drawEat();
+  } else if (gameState == 7) {
+    drawSauna();
   } else if (gameState == 8) {
     ShopView();
   }
@@ -142,6 +144,12 @@ void mousePressed() {
           gameState = 6;
           turnCount--;
         } else {
+          saunaRound = 1;
+          saunaTempWeightLoss = 0;
+          isSaunaFinished = false;
+          saunaResultText = "";
+          
+          gameState = 7; 
           turnCount--;
         }
       }
@@ -199,6 +207,10 @@ else if (gameState == 5){
       gameState = 1;
       isNextWeek = true;
     }
+  }
+  //サウナ
+  else if (gameState == 7) { 
+    mousePressedSauna(); 
   }
   //shop
   else if (gameState == 8) {
