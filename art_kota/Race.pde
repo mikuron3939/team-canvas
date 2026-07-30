@@ -334,14 +334,6 @@ void RaceView() {
   
   //ブースト中の演出
   if (drinkTimer > 0 && isRaceStarted && mutekiTimer == 0) {
-    noStroke();
-    // 残像1
-    fill(50, 200, 50, 150); 
-    rect(playerX - 25, playerY - 80, 50, 80);
-    // 残像2
-    fill(50, 200, 50, 100);  
-    rect(playerX - 50, playerY - 80, 50, 80);
-    
     //線のスタイル設定
     stroke(255, 200);
     strokeWeight(4);
