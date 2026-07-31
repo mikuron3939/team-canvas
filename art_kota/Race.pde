@@ -381,7 +381,7 @@ void RaceView() {
     if (isDrinkUsed) drinkStatus = "使用済み";
     else drinkStatus = "【E】キーで加速";
   }
-  text("ドリンク:" + drinkStatus, width - 30, 20);
+  text("ドリンク:" + drinkStatus, width - 30, 50);
   //ドリンク効果中の演出（バーを表示するなど）
   if (drinkTimer > 0 && isRaceStarted){
     noStroke(); fill(100, 255, 100, 150); // 薄い緑色
@@ -398,7 +398,7 @@ void RaceView() {
       jumpStatus = "【使用済み】";
     }
   }
-  text("二段ジャンプ: " + jumpStatus, width - 30, 50);
+  text("二段ジャンプ: " + jumpStatus, width - 30, 20);
   textAlign(CENTER, CENTER); // textAlignを元に戻す
 
 if (!isStartDashed) {
