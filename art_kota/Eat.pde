@@ -36,16 +36,34 @@ void drawEat() {
 }
 
 void initGame() {
-  // 食べ物データの初期化 (名前, x, y, ダイエット向きか, 色)
   float cx = width / 2;
   float cy = height / 2 - 100;
+  
+  // 1. 座標の配列を定義する
+  PVector[] positions = new PVector[6];
+  positions[0] = new PVector(cx - 140, cy - 40);
+  positions[1] = new PVector(cx, cy - 120);
+  positions[2] = new PVector(cx + 140, cy - 40);
+  positions[3] = new PVector(cx - 140, cy + 100);
+  positions[4] = new PVector(cx, cy + 160);
+  positions[5] = new PVector(cx + 140, cy + 100);
+  
+  // 2. 座標配列をシャッフルする (フィッシャー–イェーツのアルゴリズム)
+  for (int i = positions.length - 1; i > 0; i--) {
+    int j = (int)random(i + 1);
+    PVector temp = positions[i];
+    positions[i] = positions[j];
+    positions[j] = temp;
+  }
+  
+  // 3. シャッフルされた座標を各食べ物に割り当てる
   foods = new Food[6];
-  foods[0] = new Food("ブロッコリー", cx - 140, cy - 40, true, color(100, 200, 100)); // ⭕️
-  foods[1] = new Food("唐揚げ", cx, cy - 120, false, color(200, 150, 50));     // ❌
-  foods[2] = new Food("ささみ", cx + 140, cy - 40, true, color(255, 220, 220));     // ⭕️
-  foods[3] = new Food("ケーキ", cx - 140, cy + 100, false, color(255, 150, 200));    // ❌
-  foods[4] = new Food("ゆで卵", cx, cy + 160, true, color(255, 255, 150));     // ⭕️
-  foods[5] = new Food("ラーメン", cx + 140, cy + 100, false, color(255, 200, 100));  // ❌
+  foods[0] = new Food("ブロッコリー", positions[0].x, positions[0].y, true, color(100, 200, 100));
+  foods[1] = new Food("唐揚げ",     positions[1].x, positions[1].y, false, color(200, 150, 50));
+  foods[2] = new Food("ささみ",       positions[2].x, positions[2].y, true, color(255, 220, 220));
+  foods[3] = new Food("ケーキ",       positions[3].x, positions[3].y, false, color(255, 150, 200));
+  foods[4] = new Food("ゆで卵",       positions[4].x, positions[4].y, true, color(255, 255, 150));
+  foods[5] = new Food("ラーメン",     positions[5].x, positions[5].y, false, color(255, 200, 100));
   
   selectedFoods = new ArrayList<Food>();
   score = 0;
