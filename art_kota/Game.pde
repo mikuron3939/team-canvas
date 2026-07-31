@@ -46,7 +46,7 @@ PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
 PImage[] raceChara = new PImage[4];//レースの走っている姿
-PImage genzaichiIcon
+PImage genzaichiIcon;
 PImage  ManjaroDebuffImg;
 
 void setup() {
