@@ -41,7 +41,7 @@ if(trainingBgImg != null){
 
   //ゲージ減少
   if (!isTrainingFinished) {
-    gaugeVal -= gaugeSpeed;
+    gaugeVal -= gaugeSpeed*deltaTime;
     gaugeVal = constrain(gaugeVal, 0, 100);
   }
 

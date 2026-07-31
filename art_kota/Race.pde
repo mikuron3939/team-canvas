@@ -1,20 +1,20 @@
 //---レースゲーム用の変数---
 float playerX, playerY, playerV;//プレイヤーの位置と縦速度
 float gravity = 0.8;//重力
-int slowTimer = 0;
+float slowTimer = 0;
 boolean isGround = true; //地面にいるか
 boolean isRaceStarted = false;
 boolean hasDoubleJump = false;//能力を買ったか
 boolean canDoubleJump = false;
 boolean isSecondJumping = false;//２回目のジャンプを行ったか
-int raceTime = 0;
+float raceTime = 0;
 float resultRaceTime = 0;
 //障害物の変数
 float kabeX, kabeY;//障害物の位置
 float kabeSpeed = 10;//障害物の速度
 float kabe_yoko = 30;       
 float kabe_tate = 60;       
-int mutekiTimer = 0; //無敵時間タイマー
+float mutekiTimer = 0; //無敵時間タイマー
 boolean isHit = false;
 
 //落とし穴
@@ -28,16 +28,16 @@ float runDistance = 0;//走った距離
 boolean isGoalSpawned = false;
 
 //スタートダッシュの変数
-int startDashTimer = 0;//スタートダッシュの受付用タイマー
+float startDashTimer = 0;//スタートダッシュの受付用タイマー
 String startMessage = "";//「PERFECT!」などの表示用
 int startDashColor;
 boolean isStartDashed = false;//判定が済んだか
-int DashCountDown = 0;
+float DashCountDown = 0;
 float raceBar = 0;
 int raceBarDir = 1;
 
 //ドリンクアイテム
-int drinkTimer = 0;//ドリンクの効果時間
+float drinkTimer = 0;//ドリンクの効果時間
 float drinkBoost = 0;
 
 //レースゲームの変数を初期化
@@ -85,9 +85,9 @@ void RaceView() {
     if(!isStartDashed){
     //まだスペースを押していない（3秒間の受付中）
       if (startDashTimer > 0) {
-        startDashTimer--;
+        startDashTimer-= deltaTime;
         //バーを高速で往復させる処理（かける数字で速さを調節）
-        raceBar += 0.08 * raceBarDir;
+        raceBar += 0.08 * raceBarDir*deltaTime;
         if (raceBar >= 1.0) {
           raceBar = 1.0;
           raceBarDir = -1; // 下向きに反転
@@ -105,7 +105,7 @@ void RaceView() {
         }
      }else{
        if(DashCountDown > 0){
-         DashCountDown--;
+         DashCountDown-= deltaTime;
       }else{
           isRaceStarted = true; 
         }
@@ -119,27 +119,27 @@ void RaceView() {
     //ぶつかった時に減速
     if(slowTimer > 0){
       currentSpeed = 2.0;
-      slowTimer--;
+      slowTimer-= deltaTime;
     } else if (mutekiTimer > 0) {
       currentSpeed = 1.5; 
     }
   }
   //ドリンクアイテムの処理
   if (drinkTimer > 0){
-    drinkTimer--;
+    drinkTimer -= deltaTime;
     if (drinkTimer <= 0){
       drinkBoost = 0; // タイマー終了で加速終了
     }
   }
   //スタートダッシュタイマー
   if (startDashTimer > 0) {
-    startDashTimer--;
+    startDashTimer-= deltaTime;
   }
   //最初の一定距離の間は、穴も障害物も出さない
   boolean isSafeZone = (runDistance < 500);
   //落とし穴
   if (!isGoalSpawned && !isSafeZone){
-    anaX -= currentSpeed;
+    anaX -= currentSpeed*deltaTime;
     if (anaX < -ana_yoko) {
       anaX = width + random(300, 700); //一定間隔で穴が出現
       isAnaSpawned = false;
@@ -156,15 +156,15 @@ void RaceView() {
   }
   //走行距離のカウント
   if (isRaceStarted && !isGoalSpawned) {//ゴールしてないとき
-    runDistance += currentSpeed;
+    runDistance += currentSpeed*deltaTime;
     if (runDistance >= goalLine) {
       isGoalSpawned = true;
       goalX = width + 100; // 画面の右外にゴールを出現させる
     }
   }
   //プレイヤーのジャンプ処理
-  playerV += gravity;
-  playerY += playerV;
+  playerV += gravity*deltaTime;
+  playerY += playerV*deltaTime;
   // 穴の中心X座標
   float anaCenterX = anaX + ana_yoko / 2;
   //穴の右端（先のX座標）
@@ -200,12 +200,12 @@ void RaceView() {
 
   //無敵タイマーのカウントダウン
   if (mutekiTimer > 0) {
-    mutekiTimer--;
+    mutekiTimer-= deltaTime;
   }
   
 //--- 障害物の処理 ---
   if (!isGoalSpawned && !isSafeZone) {
-    kabeX -= currentSpeed;
+    kabeX -= currentSpeed*deltaTime;
     if (kabeX < -max(kabe_yoko,kabe_tate)) {
       kabeX = width + random(150, 400);
       if (abs(kabeX - anaX) < 400) {
@@ -235,7 +235,7 @@ void RaceView() {
   }
   //ゴールテープの処理
   if (isGoalSpawned){
-    goalX -= currentSpeed;// ゴールテープが左に流れてくる
+    goalX -= currentSpeed*deltaTime;// ゴールテープが左に流れてくる
     // ゴールテープ（赤い線）の描画
     stroke(250, 50, 50);
     strokeWeight(8);
@@ -252,7 +252,7 @@ void RaceView() {
   
   //タイマー
   if (isRaceStarted && !isGoalSpawned && !isFalling) {
-    raceTime++; //レース中なら1フレームごとに＋1
+    raceTime+= deltaTime; //レース中なら1フレームごとに＋1
   }
   // タイムを「秒」に変換（60フレームで割る）
   float displayTime = raceTime / 60.0;

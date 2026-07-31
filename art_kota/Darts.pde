@@ -68,7 +68,7 @@ void DartsView(){
   
   //動くバーの更新と描画
   if (!isDartsFinished) {
-    barX += barSpeed;
+    barX += barSpeed*deltaTime;
     //ゲージの端に達したら跳ね返る
     if (barX < meterX || barX > meterX + meter_yoko) {
       barSpeed *= -1;

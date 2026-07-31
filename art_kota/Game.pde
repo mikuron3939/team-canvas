@@ -3,6 +3,7 @@
 //2レース,3クリア,4ダーツ,5筋トレ,6食制限,8ならアイテム購入）
 int gameState = 0;
 int turnCount = 5;//ターンの変数
+float deltaTime =1.0;
 //ボタンの配置やサイズ
 float start_yoko, start_tate, startX, startY;
 float[] circleX = new float[4];//X座標しか変わらないから
@@ -118,6 +119,13 @@ void setup() {
 }
 
 void draw() {
+  //FPSによってスピードが変わらないようにするため。
+  if(frameRate >0){
+    deltaTime=60.0/frameRate;
+  }else{
+    deltaTime=1.0;
+  }
+  
   background(255); //画面の背景色をクリア
   if (gameState == 0) {
     StartView();
@@ -138,12 +146,8 @@ void draw() {
   } else if (gameState == 8) {
     ShopView();
   }
-  if(frameCount%60==0){
-  println("FPS= "+frameRate);
-  }
 }
 
-  
 //マウスクリック時の判定
 void mousePressed() {
   //スタート画面のとき
