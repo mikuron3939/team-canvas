@@ -138,8 +138,12 @@ void draw() {
   } else if (gameState == 8) {
     ShopView();
   }
+  if(frameCount%60==0){
+  println("FPS= "+frameRate);
+  }
 }
 
+  
 //マウスクリック時の判定
 void mousePressed() {
   //スタート画面のとき
