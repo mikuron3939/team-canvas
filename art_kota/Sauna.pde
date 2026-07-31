@@ -7,16 +7,31 @@ String saunaResultText = "";
 // 描画処理 (Gameタブの draw() から呼び出す)
 // ==========================================
 void drawSauna() {
-  background(255, 240, 240); // 背景色
+int idx = getWeightIndex();
+
+if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった...")){
+  //のぼせた背景
+  imageMode(CORNER);
+  image(saunaFaintBg[idx],0,0,width,height);
+}else{
+  imageMode(CORNER);
+  image(saunaBg[idx],0,0,width,height);
+}
 
   if (!isSaunaFinished) {
     // --- プレイ中のUI描画 ---
     float[] rates = {70.0, 50.0, 30.0, 10.0};
     int currentRate = (int)rates[saunaRound - 1];
-
+    
+    //半透明の白いパネル
+    noStroke();
+    fill(255,200); //白、半透明
+    rectMode(CENTER);
+    rect(width/2,80,420,70,15);
+    rectMode(CORNER);
     fill(0);
     textSize(32);
-    text("現在の成果: -" + saunaTempWeightLoss + "kg", width / 2, 160);
+    text("現在の成果: -" + saunaTempWeightLoss + "kg", width / 2, 80);
     
     // 限界に挑むボタン
     fill(255, 100, 100);
@@ -33,15 +48,23 @@ void drawSauna() {
 
   } else {
     // --- 終了後の結果画面描画 ---
+    fill(255,200);
+    noStroke();
+    rectMode(CENTER);
+    rect(width/2,225,600,180,20);
+    rectMode(CORNER);
+    
     fill(0);
     textSize(36);
     text(saunaResultText, width / 2, 200);
+    
     textSize(28);
     text("最終減量: -" + saunaTempWeightLoss + "kg", width / 2, 280);
 
     // 次へボタン
     fill(200);
     rect(width / 2 - 100, 450, 200, 80, 10);
+    
     fill(0);
     textSize(24);
     text("次へ", width / 2, 490);
@@ -91,5 +114,19 @@ void mousePressedSauna() {
       gameState = 1;
       isNextWeek = true;
     }
+  }
+}
+
+
+// 体重によって画像番号を返す
+int getWeightIndex() {
+  if (weight >= 100) {
+    return 0;
+  } else if (weight >= 80) {
+    return 1;
+  } else if (weight >= 65) {
+    return 2;
+  } else {
+    return 3;
   }
 }

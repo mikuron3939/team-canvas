@@ -45,9 +45,14 @@ if(trainingBgImg != null){
     gaugeVal = constrain(gaugeVal, 0, 100);
   }
 
+    // 半透明の黒いシート
+noStroke();
+fill(0, 150);   // 黒、透明度150（0～255）
+rect(180, 20, 440, 90, 15);   // x, y, 幅, 高さ, 角丸
+
   textAlign(CENTER, CENTER);
 
-  fill(0);
+  fill(255);
   textSize(28);
   text("SPACE連打！", width/2, 50);
 

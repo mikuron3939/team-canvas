@@ -31,6 +31,8 @@ PImage dartHandImg;
 PImage dartTextImg;
 PImage[] trainingImgs = new PImage[3];//筋トレ用
 PImage trainingBgImg;
+PImage[] saunaBg = new PImage[4];
+PImage[] saunaFaintBg =new PImage[4];
 PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
@@ -70,6 +72,16 @@ void setup() {
   dartTextImg = loadImage("dartText.png");
 
   trainingBgImg= loadImage("trainingBg.png");
+  
+  saunaBg[0]=loadImage("sauna100kg.png");
+  saunaBg[1]=loadImage("sauna80kg.png");
+  saunaBg[2]=loadImage("sauna65kg.png");
+  saunaBg[3]=loadImage("sauna50kg.png");
+  
+  saunaFaintBg[0]=loadImage("saunaFaint100kg.png");
+  saunaFaintBg[1]=loadImage("saunaFaint80kg.png");
+  saunaFaintBg[2]=loadImage("saunaFaint65kg.png");
+  saunaFaintBg[3]=loadImage("saunaFaint50kg.png");
 
   hardleImg = loadImage("hardle.png");
   hardle_hitImg = loadImage("hardleHit.png");
@@ -142,7 +154,6 @@ void mousePressed() {
           resetDarts();
           gameState = 4;
           turnCount--;
-          manjaroCount++;
         } else if (i == 1) {
           resetTraining();
           gameState = 5;
