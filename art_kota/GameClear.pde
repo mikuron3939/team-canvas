@@ -34,4 +34,6 @@ void GameClearView() {
     textSize(24);
     text("クリックでタイトルへ戻る", width / 2, height * 0.7);
     imageMode(CORNER);
+
+weight = 100;//体重リセット
 }
