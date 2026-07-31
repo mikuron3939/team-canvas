@@ -33,6 +33,13 @@ void HomeView() {
   textSize(35);
   text("体重:" + weight + "kg", width - 30, 60);
   textAlign(CENTER, CENTER);
+  if (manjaroCount > 0) {
+      textAlign(LEFT, TOP);
+      fill(150, 0, 255);
+      textSize(26);
+      text("× " + manjaroCount, 150, 100);
+      textAlign(CENTER, CENTER); // 後続のUIのために基準点を戻す
+    }
 
   //ホーム画面の4つの丸ボタンの設定
   circleY = height * 0.85;   //画面の下らへん

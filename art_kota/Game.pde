@@ -11,6 +11,7 @@ float circleY, circleR;
 int money = 50000;
 //体重の初期化
 int weight = 100;
+int manjaroCount = 0;
 //OP
 boolean isFirst = true;
 boolean isNextWeek = false;
@@ -141,6 +142,7 @@ void mousePressed() {
           resetDarts();
           gameState = 4;
           turnCount--;
+          manjaroCount++;
         } else if (i == 1) {
           resetTraining();
           gameState = 5;
