@@ -18,10 +18,14 @@ if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった
   image(saunaBg[idx],0,0,width,height);
 }
 
-  if (!isSaunaFinished) {
+ if (!isSaunaFinished) {
     // --- プレイ中のUI描画 ---
-    float[] rates = {70.0, 50.0, 30.0, 10.0};
+    float[] rates = {90.0, 70.0, 50.0, 30.0};
     int currentRate = (int)rates[saunaRound - 1];
+    
+    // ★追加: 現在のラウンドで得られる減量値を取得
+    int[] dropWeights = {3, 4, 5, 6}; 
+    int currentDrop = dropWeights[saunaRound - 1];
     
     //半透明の白いパネル
     noStroke();
@@ -33,17 +37,29 @@ if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった
     textSize(32);
     text("現在の成果: -" + saunaTempWeightLoss + "kg", width / 2, 80);
     
+    // ==========================================
+    // ★追加: 1回目（最初の選択）のみリスク説明を表示
+    if (saunaRound == 1) {
+      fill(255, 0, 0); // 警告を示す赤色
+      textSize(24);
+      // 「現在の成果」パネルの直下に配置
+      text("※失敗すると減量成果は0になります", width / 2, 140);
+    }
+    // ==========================================
+    
     // 限界に挑むボタン
     fill(255, 100, 100);
     rect(width / 2 - 250, 350, 200, 100, 10);
     fill(255);
-    textSize(24);
-    text("限界に挑む!\n(" + currentRate + "%で成功)", width / 2 - 150, 400);
+    textSize(22); // ★修正: 情報量が増えるため、枠からはみ出さないようサイズを微調整
+    // ★修正: 成功時の減量値をテキストに結合して表示
+    text("限界に挑む!\n(成功: -" + currentDrop + "kg / " + currentRate + "%)", width / 2 - 150, 400);
 
     // 安全に終了ボタン
     fill(100, 150, 255);
     rect(width / 2 + 50, 350, 200, 100, 10);
     fill(255);
+    textSize(24); // 前のボタンで変更したサイズ設定を元に戻す
     text("ギブアップ...", width / 2 + 150, 400);
 
   } else {
@@ -78,12 +94,17 @@ void mousePressedSauna() {
   if (!isSaunaFinished) {
     // 「限界に挑む」ボタン
     if (mouseX > width / 2 - 250 && mouseX < width / 2 - 50 && mouseY > 350 && mouseY < 450) {
-      float[] rates = {70.0, 50.0, 30.0, 10.0};
+      float[] rates = {90.0, 70.0, 50.0, 30.0};
       float currentRate = rates[saunaRound - 1];
 
       if (random(100) < currentRate) {
         // 成功
-        saunaTempWeightLoss += 2;
+        
+        int[] dropWeights = {3, 4, 5, 6}; 
+        
+        // 現在のラウンド数(saunaRound)に対応する要素を引き出して加算
+        saunaTempWeightLoss += dropWeights[saunaRound - 1];
+        
         if (saunaRound >= 4) {
           weight -= saunaTempWeightLoss;
           saunaResultText = "完全制覇！限界を超えた！";
