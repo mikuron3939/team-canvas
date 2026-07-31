@@ -153,6 +153,7 @@ void mousePressed() {
           money -= 10000;
           resetDarts();
           gameState = 4;
+          manjaroCount++;
           turnCount--;
         } else if (i == 1) {
           resetTraining();
