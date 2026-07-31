@@ -34,7 +34,7 @@ void HomeView() {
   text("体重:" + weight + "kg", width - 30, 60);
   textAlign(CENTER, CENTER);
   if (manjaroCount > 0) {
-      image(calenderImg, 150, 100, 100, 100);
+      image(selectImgs[0], 120, 10, 100, 100);
       textAlign(LEFT, TOP);
       fill(150, 0, 255);
       textSize(26);
