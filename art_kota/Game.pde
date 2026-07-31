@@ -33,6 +33,14 @@ PImage[] trainingImgs = new PImage[3];//筋トレ用
 PImage trainingBgImg;
 PImage[] saunaBg = new PImage[4];
 PImage[] saunaFaintBg =new PImage[4];
+PImage eatTitleBg; //食事制限タイトル
+PImage eatGameBg; //食事制限プレイ中背景
+PImage broccoliImg;
+PImage karaageImg;
+PImage sasamiImg;
+PImage cakeImg;
+PImage eggImg;
+PImage ramenImg;
 PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
@@ -82,6 +90,16 @@ void setup() {
   saunaFaintBg[1]=loadImage("saunaFaint80kg.png");
   saunaFaintBg[2]=loadImage("saunaFaint65kg.png");
   saunaFaintBg[3]=loadImage("saunaFaint50kg.png");
+  
+  eatTitleBg = loadImage("eatTitleBg.png");
+  eatGameBg = loadImage("eatGameBg.png");
+  
+  broccoliImg = loadImage("broccoli.png");
+  karaageImg = loadImage("karaage.png");
+  sasamiImg = loadImage("sasami.png");
+  cakeImg = loadImage("cake.png");
+  eggImg = loadImage("egg.png");
+  ramenImg = loadImage("ramen.png");  
 
   hardleImg = loadImage("hardle.png");
   hardle_hitImg = loadImage("hardleHit.png");

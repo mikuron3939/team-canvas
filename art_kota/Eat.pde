@@ -58,25 +58,31 @@ void initGame() {
   
   // 3. シャッフルされた座標を各食べ物に割り当てる
   foods = new Food[6];
-  foods[0] = new Food("ブロッコリー", positions[0].x, positions[0].y, true, color(100, 200, 100));
-  foods[1] = new Food("唐揚げ",     positions[1].x, positions[1].y, false, color(200, 150, 50));
-  foods[2] = new Food("ささみ",       positions[2].x, positions[2].y, true, color(255, 220, 220));
-  foods[3] = new Food("ケーキ",       positions[3].x, positions[3].y, false, color(255, 150, 200));
-  foods[4] = new Food("ゆで卵",       positions[4].x, positions[4].y, true, color(255, 255, 150));
-  foods[5] = new Food("ラーメン",     positions[5].x, positions[5].y, false, color(255, 200, 100));
+  foods[0] = new Food("ブロッコリー", positions[0].x, positions[0].y, true, color(100, 200, 100),broccoliImg);
+  foods[1] = new Food("唐揚げ",     positions[1].x, positions[1].y, false, color(200, 150, 50),karaageImg);
+  foods[2] = new Food("ささみ",       positions[2].x, positions[2].y, true, color(255, 220, 220),sasamiImg);
+  foods[3] = new Food("ケーキ",       positions[3].x, positions[3].y, false, color(255, 150, 200),cakeImg);
+  foods[4] = new Food("ゆで卵",       positions[4].x, positions[4].y, true, color(255, 255, 150),eggImg);
+  foods[5] = new Food("ラーメン",     positions[5].x, positions[5].y, false, color(255, 200, 100),ramenImg);
   
   selectedFoods = new ArrayList<Food>();
   score = 0;
 }
 // --- 各画面の描画処理 ---
 void eatDrawTitle() {
-  fill(50);
-  textSize(40);
-  text("ダイエット・チョイス！", width/2, height/3);
+  imageMode(CORNER);
+  image(eatTitleBg,0,0,width,height);
   
+  //半透明の白いパネル
+    noStroke();
+    fill(255,200); //白、半透明
+    rectMode(CENTER);
+    rect(width/2,500,220,30,15);
+    rectMode(CORNER);
   textSize(20);
-  fill(100);
-  text("クリックしてスタート", width/2, height/2 + 50);
+  fill(0);
+  
+  text("クリックしてスタート", width/2, height/2 + 200);
 }
 
 void eatDrawCountdown() {
@@ -98,6 +104,8 @@ void eatDrawCountdown() {
   }
 }
 void eatDrawPlayScreen() {
+  imageMode(CORNER);
+  image(eatGameBg,0,0,width,height);
   // 残り時間の計算
   int elapsed = millis() - playStartTime;
   int remainTime = TIME_LIMIT - elapsed;
@@ -151,6 +159,8 @@ void eatDrawSlots() {
 }
 
 void eatDrawResult() {
+  imageMode(CORNER);
+  image(eatGameBg,0,0,width,height);
   fill(50);
   textSize(40);
   text("結果発表", width/2, height/6);
@@ -257,13 +267,15 @@ class Food {
   boolean isHealthy; // ダイエット向きかどうか
   boolean isSelected;
   color col;
+  PImage img;
 
-  Food(String n, float px, float py, boolean healthy, color c) {
+  Food(String n, float px, float py, boolean healthy, color c, PImage image) {
     name = n;
     x = px;
     y = py;
     isHealthy = healthy;
     col = c;
+    img = image;
     radius = 50;
     isSelected = false;
   }
@@ -273,8 +285,8 @@ class Food {
     if (isSelected) return; 
     
     noStroke();
-    fill(col);
-    ellipse(x, y, radius * 2, radius * 2);
+    imageMode(CENTER);
+    image(img, x, y, radius*2.2, radius*2.2);
     
     fill(50);
     textSize(20);
