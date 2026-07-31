@@ -189,6 +189,15 @@ void RaceView() {
       canDoubleJump = true;
     }
   }
+
+ //穴に落ちた後の位置調整
+  if(playerX > 400 && mutekiTimer == 0){
+    playerX -= 2;
+  }
+  if(playerX < 400 && mutekiTimer == 0){
+    playerX += 2;
+  }
+
   //無敵タイマーのカウントダウン
   if (mutekiTimer > 0) {
     mutekiTimer--;
