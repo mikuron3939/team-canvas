@@ -46,6 +46,7 @@ PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
 PImage[] raceChara = new PImage[4];//レースの走っている姿
+PImage genzaichiIcon
 PImage  ManjaroDebuffImg;
 
 void setup() {
@@ -112,6 +113,8 @@ void setup() {
   raceChara[1] = loadImage("race80kg.png");
   raceChara[2] = loadImage("race65kg.png");
   raceChara[3] = loadImage("race50kg.png");
+
+genzaichiIcon = loadImage("genzaichiicon.png");
 
   //進むボタン
   next_yoko = 160;
