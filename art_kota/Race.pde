@@ -40,6 +40,7 @@ int raceBarDir = 1;
 float drinkTimer = 0;//ドリンクの効果時間
 float drinkBoost = 0;
 
+
 //レースゲームの変数を初期化
 void resetRace(){
   playerX = 400;
@@ -261,7 +262,7 @@ void RaceView() {
   fill(255);
   textSize(24);
   textAlign(RIGHT, TOP);
-  text("TIME: " + nf(displayTime, 0, 2) + "秒", width - 30, 30);
+  text("TIME: " + nf(displayTime, 0, 2) + "秒", width - 30, 70);
   
   //左側のスタートダッシュ用バー---
   if (!isRaceStarted) {
@@ -368,7 +369,7 @@ void RaceView() {
   text("進捗:" + int(progress * 100) + "%", 30, 20);
   if(isRaceStarted){
     textAlign(CENTER, CENTER);
-    text("【SPACEキー】でジャンプ！", width / 2, 50);
+    text("【SPACEキー】でジャンプ！", width / 2, 100);
   }
   
   //ドリンクアイテムのUI
@@ -380,7 +381,7 @@ void RaceView() {
     if (isDrinkUsed) drinkStatus = "使用済み";
     else drinkStatus = "【E】キーで加速";
   }
-  text("ドリンク:" + drinkStatus, width - 30, 20);
+  text("ドリンク:" + drinkStatus, width - 30, 50);
   //ドリンク効果中の演出（バーを表示するなど）
   if (drinkTimer > 0 && isRaceStarted){
     noStroke(); fill(100, 255, 100, 150); // 薄い緑色
@@ -397,7 +398,7 @@ void RaceView() {
       jumpStatus = "【使用済み】";
     }
   }
-  text("二段ジャンプ: " + jumpStatus, width - 30, 50);
+  text("二段ジャンプ: " + jumpStatus, width - 30, 20);
   textAlign(CENTER, CENTER); // textAlignを元に戻す
 
 if (!isStartDashed) {
@@ -411,4 +412,16 @@ if (!isStartDashed) {
       text("副作用：疲労感でスタートに集中できない！", width/2, 200);
     }
   }
+  
+  //現在地点バー
+  fill(200);
+  rect(200,25,400,6);
+  ellipse(200,28,10,10);
+  ellipse(600,28,10,10);
+  textSize(15);
+  fill(100);
+  text("START",200,10);
+  text("GOAL",600,10);
+   float genzaichi = runDistance / 100 * 4 + 200;
+  image(genzaichiIcon,genzaichi-25,17,50,50);
 }

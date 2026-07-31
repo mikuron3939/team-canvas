@@ -31,23 +31,9 @@ void resetTraining() {
 // 画面描画とロジック更新
 //------------------------
 void TrainingView() {
-<<<<<<< HEAD
-
-imageMode(CORNER);
-
-if(trainingBgImg != null){
-  image(trainingBgImg, 0, 0, width, height);
-}
-
-  //ゲージ減少
-  if (!isTrainingFinished) {
-    gaugeVal -= gaugeSpeed*deltaTime;
-    gaugeVal = constrain(gaugeVal, 0, 100);
-=======
   imageMode(CORNER);
   if(trainingBgImg != null){
     image(trainingBgImg, 0, 0, width, height);
->>>>>>> 8b45dd6713284083dc7aff8e79eeaef1b50db5b7
   }
 
   // --- ロジック更新（トレーニング中のみ） ---

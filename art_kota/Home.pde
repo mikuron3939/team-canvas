@@ -34,7 +34,7 @@ void HomeView() {
   text("体重:" + weight + "kg", width - 30, 60);
   textAlign(CENTER, CENTER);
   if (manjaroCount > 0) {
-      image(selectImgs[0], 120, 10, 100, 100);
+      image(ManjaroDebuffImg, 120, 10, 100, 100);
       textAlign(LEFT, TOP);
       fill(150, 0, 255);
       textSize(26);
@@ -86,7 +86,7 @@ void HomeView() {
         fill(255, 0, 0);
         text("-10,000円", circleX[i] - 40, circleY - 90);
         fill(80, 255, 0);
-        text("-??kg", circleX[i] + 40, circleY - 90);
+        text("-15kg", circleX[i] + 40, circleY - 90);
       } else if (i == 1) {
         fill(0, 200);
         rect(circleX[i]-100, circleY - 130, circleX[0] + 50, 50);
