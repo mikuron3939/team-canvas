@@ -129,6 +129,7 @@ void mousePressed() {
     if ((mouseX > startX && mouseX < startX + start_yoko) && (mouseY > startY && mouseY < startY + start_tate)) {
       turnCount = 5;//日数をリセット
       gameState = 1;//ホーム画面へ切り替え
+      manjaroCount = 0;
     }
   }
   //ホーム画面のとき
