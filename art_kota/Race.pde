@@ -390,4 +390,16 @@ void RaceView() {
   }
   text("二段ジャンプ: " + jumpStatus, width - 30, 50);
   textAlign(CENTER, CENTER); // textAlignを元に戻す
+
+if (!isStartDashed) {
+    if (manjaroCount > 0) {//マンジャロ使用時のデメリット
+      fill(30);
+      rect(50, 150, 120, 300);
+      fill(200, 0, 0);
+      textSize(40);
+      text("?", 100, 275);
+      textSize(25);
+      text("副作用：疲労感でスタートに集中できない！", width/2, 200);
+    }
+  }
 }
