@@ -45,6 +45,7 @@ PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
 PImage[] raceChara = new PImage[4];//レースの走っている姿
+PImage  ManjaroDebuffImg;
 
 void setup() {
   size(800, 600);
@@ -70,6 +71,7 @@ void setup() {
 
   moneyImg = loadImage("money.png");
   calenderImg = loadImage("calender.png");
+  ManjaroDebuffImg = loadImage("manjaro debuff.png");
 
   targetImgs[0] = loadImage("target100kg.png");
   targetImgs[1] = loadImage("target80kg.png");
@@ -209,34 +211,29 @@ void mousePressed() {
       if (dartsResultStr.equals("BAD")) {
         weight -= 5;
       } else if (dartsResultStr.equals("PERFECT!!")) {
-        weight -= 12;
+        weight -= 15;
       } else if (dartsResultStr.equals("NICE!")) {
-        weight -= 10;
+        weight -= 12;
       }
       gameState = 1;
       isNextWeek = true;
     }
   }
 //筋トレ
-else if (gameState == 5){
-
-  if(isTrainingFinished){
-
-    if(trainingResultStr.equals("BAD")){
-      weight -= 5;
-    }
-    else if(trainingResultStr.equals("NICE!")){
-      weight -= 8;
-    }
-    else if(trainingResultStr.equals("PERFECT!!")){
-      weight -= 10;
+else if (gameState == 5) {
+  if (isTrainingFinished) {
+    // 改修した文字列に合わせて条件分岐を変更
+    if (trainingResultStr.equals("FAILED...")) {
+      weight -= 1;
+    } 
+    else if (trainingResultStr.equals("SUCCESS!!")) {
+      weight -= 6;
     }
 
     kabeSpeed += 1;
     gameState = 1;
     isNextWeek = true;
   }
-
 }
   //食制限
   else if (gameState == 6) {
@@ -380,9 +377,6 @@ void keyPressed() {
   } else if (gameState == 5) {
     if (key == ' ') {
       trainingSpacePressed();
-    }
-    if (keyCode == ENTER || keyCode == RETURN) {
-      stopTraining();
     }
   }
 }
