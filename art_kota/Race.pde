@@ -177,7 +177,10 @@ void RaceView() {
       playerV = 15;
 
       if(playerY > 600){
-        gameState = 9;
+        mutekiTimer = 60;
+        slowTimer = 60;
+        playerY = 100;
+        playerX = playerX + 50;
       }
     }else{
       playerY = 450;
