@@ -85,10 +85,13 @@ void RaceView() {
   if (!isRaceStarted) {
     if(!isStartDashed){
     //まだスペースを押していない（3秒間の受付中）
-      if (startDashTimer > 0) {
+     if (startDashTimer > 0) {
         startDashTimer-= deltaTime;
-        //バーを高速で往復させる処理（かける数字で速さを調節）
-        raceBar += 0.08 * raceBarDir*deltaTime;
+        // マンジャロの副作用として、カウントが1以上の場合は速度を2倍（0.16）にする
+        float currentBarSpeed = (manjaroCount > 0) ? 0.16 : 0.05;
+        
+        //バーを高速で往復させる処理
+        raceBar += currentBarSpeed * raceBarDir * deltaTime;
         if (raceBar >= 1.0) {
           raceBar = 1.0;
           raceBarDir = -1; // 下向きに反転
@@ -403,13 +406,10 @@ void RaceView() {
 
 if (!isStartDashed) {
     if (manjaroCount > 0) {//マンジャロ使用時のデメリット
-      fill(30);
-      rect(50, 150, 120, 300);
+      // 目隠し用の矩形描画を削除
       fill(200, 0, 0);
-      textSize(40);
-      text("?", 100, 275);
       textSize(25);
-      text("副作用：疲労感でスタートに集中できない！", width/2, 200);
+      text("副作用：疲労感でゲージの動きが速い！", width / 2, 200);
     }
   }
   

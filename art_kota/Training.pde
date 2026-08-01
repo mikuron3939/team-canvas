@@ -19,9 +19,9 @@ int trainingResultColor;
 //------------------------
 void resetTraining() {
   gaugeVal = 0;
-  gaugeSpeed = 0.7;
+  gaugeSpeed = 0.5;
   if(manjaroCount > 0){
-    gaugeSpeed = 0.9;
+    gaugeSpeed = 0.7;
   }
   
   isTrainingFinished = false;
@@ -138,7 +138,7 @@ void trainingSpacePressed() {
   if(manjaroCount == 0){
   gaugeVal += 7;
   }else{
-    gaugeVal += 5;
+    gaugeVal += 7;
   }
   gaugeVal = constrain(gaugeVal, 0, 100);
 }
