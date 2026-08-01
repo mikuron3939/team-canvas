@@ -21,6 +21,12 @@ if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった
  if (!isSaunaFinished) {
     // --- プレイ中のUI描画 ---
     float[] rates = {90.0, 70.0, 50.0, 30.0};
+    if(manjaroCount > 0){
+      int i;
+      for(i=0; i<4; i++){
+        rates[i] -= 10;
+      }
+    }
     int currentRate = (int)rates[saunaRound - 1];
     
     // ★追加: 現在のラウンドで得られる減量値を取得
@@ -53,6 +59,10 @@ if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった
     fill(255);
     textSize(22); // ★修正: 情報量が増えるため、枠からはみ出さないようサイズを微調整
     // ★修正: 成功時の減量値をテキストに結合して表示
+    if (manjaroCount > 0){
+      fill(120,80,255);
+      text("副作用でのぼせやすくなった！",width/2,500);
+    }
     text("限界に挑む!\n(成功: -" + currentDrop + "kg / " + currentRate + "%)", width / 2 - 150, 400);
 
     // 安全に終了ボタン
