@@ -61,7 +61,7 @@ if( isSaunaFinished && saunaResultText.equals("のぼせて倒れてしまった
     // ★修正: 成功時の減量値をテキストに結合して表示
     if (manjaroCount > 0){
       fill(120,80,255);
-      text("副作用でのぼせやすくなった！",width/2,500);
+      text("副作用:低血糖でのぼせやすくなった！",width/2,500);
     }
     text("限界に挑む!\n(成功: -" + currentDrop + "kg / " + currentRate + "%)", width / 2 - 150, 400);
 
