@@ -1,10 +1,10 @@
 //---ゲームクリア画面---
 void GameClearView() {
   String ClearTime = nf( resultRaceTime/60, 2, 2); //ゴールタイムを小数点第二位までに調整
-  int ShuTime = 500;
-  int YuTime = 600;
-  int RyoTime = 700;
-  int KaTime = 800;//値は仮
+  int ShuTime = 600;
+  int YuTime = 700;
+  int RyoTime = 800;
+  int KaTime = 900;//値は仮
   //成績評価
   fill(255, 0, 0);
   if (resultRaceTime <= ShuTime) {
