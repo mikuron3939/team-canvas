@@ -1,11 +1,11 @@
 //shopの変数
 int shoesLevel = 0;//靴のランク
-int[] shoesPrices = {0,5000,10000,15000};//靴の価格
+int[] shoesPrices = {0,6000,12000,20000};//靴の価格
 float jumpPower = 0;//最終的なジャンプ力
 float nextX,nextY,next_yoko,next_tate;
 //drink
 int drinkLevel = 0;
-int[] drinkPrices = {0,5000,10000,15000};
+int[] drinkPrices = {0,6000,12000,20000};
 boolean isDrinkUsed = false;
 boolean ownDoubleJump = false;
 
