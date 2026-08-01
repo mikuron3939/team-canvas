@@ -18,6 +18,7 @@ int tutorialPage = 1;
 //OP
 boolean isFirst = true;
 boolean isNextWeek = false;
+boolean isTutorialSeen = false;
 //shop
 //shoes
 
@@ -243,13 +244,15 @@ void mousePressed() {
       manjaroCount = 0;
     }
   }
-  //ホーム画面のとき
-  //ホーム画面のとき
   else if (gameState == 1) {
     //設定の説明OP
     if (isFirst) {
       isFirst = false;
-      gameState = 9; // ★追加：OPが終わったらチュートリアル画面(9)へ遷移させる
+      
+      // ★修正：チュートリアルをまだ見ていない場合のみ、画面(9)へ遷移する
+      if (isTutorialSeen == false) {
+        gameState = 9; 
+      }
       return;
     }
     // ...以降の処理はそのまま...
@@ -411,10 +414,12 @@ else if (gameState == 5) {
   }
   else if (gameState == 9) {
     if (tutorialPage == 1) {
-      tutorialPage = 2; // 1枚目表示中なら、2枚目へ進める
+      tutorialPage = 2;
     } else if (tutorialPage == 2) {
-      gameState = 1;    // 2枚目表示中なら、ホーム画面(1)へ移行
-      tutorialPage = 1; // 次回のプレイに備えてページを1にリセットしておく
+      gameState = 1;    // ホーム画面(1)へ移行
+      tutorialPage = 1; // ページをリセット
+      
+      isTutorialSeen = true; // ★追加：チュートリアル完了フラグを立てる
     }
   }
 }
