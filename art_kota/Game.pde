@@ -13,6 +13,8 @@ int money = 50000;
 //体重の初期化
 int weight = 100;
 int manjaroCount = 0;
+
+int tutorialPage = 1;
 //OP
 boolean isFirst = true;
 boolean isNextWeek = false;
@@ -49,7 +51,8 @@ PImage[] raceChara = new PImage[4];//レースの走っている姿
 PImage[] raceChara2 = new PImage[4];
 PImage genzaichiIcon;
 PImage  ManjaroDebuffImg;
-
+PImage tutorial1Img;
+PImage tutorial2Img;
 //BGM
 import ddf.minim.*;
 
@@ -75,6 +78,9 @@ void setup() {
   start_logo = loadImage("start_logo.png");
 
   opImg = loadImage("op.png");
+  
+  tutorial1Img = loadImage("tutorial1.png");
+  tutorial2Img = loadImage("tutorial2.png");
 
   charaImg[0] = loadImage("100kg.png");
   charaImg[1] = loadImage("80kg.png");
@@ -219,8 +225,11 @@ if (gameState != lastGameState) {
     drawEat();
   } else if (gameState == 7) {
     drawSauna();
+  // ...
   } else if (gameState == 8) {
     ShopView();
+  } else if (gameState == 9) {
+    TutorialView(); 
   }
 }
 
@@ -235,12 +244,15 @@ void mousePressed() {
     }
   }
   //ホーム画面のとき
+  //ホーム画面のとき
   else if (gameState == 1) {
     //設定の説明OP
     if (isFirst) {
       isFirst = false;
+      gameState = 9; // ★追加：OPが終わったらチュートリアル画面(9)へ遷移させる
       return;
     }
+    // ...以降の処理はそのまま...
     if (isNextWeek) {
       isNextWeek = false;
       if (turnCount <= 0) {
@@ -392,6 +404,17 @@ else if (gameState == 5) {
       //レース開始処理へ
       resetRace();
       gameState = 2;
+    }
+  }
+  else if (gameState == 8) {
+     // ショップの処理...
+  }
+  else if (gameState == 9) {
+    if (tutorialPage == 1) {
+      tutorialPage = 2; // 1枚目表示中なら、2枚目へ進める
+    } else if (tutorialPage == 2) {
+      gameState = 1;    // 2枚目表示中なら、ホーム画面(1)へ移行
+      tutorialPage = 1; // 次回のプレイに備えてページを1にリセットしておく
     }
   }
 }
