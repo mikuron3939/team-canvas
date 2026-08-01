@@ -19,7 +19,11 @@ int trainingResultColor;
 //------------------------
 void resetTraining() {
   gaugeVal = 0;
-  gaugeSpeed = 0.6;
+  gaugeSpeed = 0.7;
+  if(manjaroCount > 0){
+    gaugeSpeed = 0.9;
+  }
+  
   isTrainingFinished = false;
   trainingResultStr = "";
   
@@ -62,9 +66,15 @@ void TrainingView() {
   fill(255);
   textSize(28);
   text("SPACE連打でゲージをキープ！", width/2, 50);
+  if(manjaroCount > 0){
+    fill(190,0,255);
+    text("副作用:筋肉痛でトレーニングが",width/2,150);
+    text("難しくなった！",width/2,185);
+  }
 
   // 残り時間の表示
   textSize(24);
+  fill(255);
   if (!isTrainingFinished) {
     int remaining = max(0, TRAINING_LIMIT_MS - (millis() - trainingStartTime));
     text("残り時間: " + nf(remaining / 1000.0, 1, 2) + "秒", width/2, 90);
@@ -125,7 +135,11 @@ void TrainingView() {
 void trainingSpacePressed() {
   if (isTrainingFinished) return;
   
-  gaugeVal += 8;
+  if(manjaroCount == 0){
+  gaugeVal += 7;
+  }else{
+    gaugeVal += 5;
+  }
   gaugeVal = constrain(gaugeVal, 0, 100);
 }
 
