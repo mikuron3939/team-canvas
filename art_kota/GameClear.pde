@@ -11,12 +11,20 @@ void GameClearView() {
     text("成績...秀!!", width / 2, height * 0.55);
   } else if (resultRaceTime <= YuTime) {
     text("成績...優!!", width / 2, height * 0.55);
+    String NextTime = nf( (resultRaceTime-ShuTime)/60, 1, 2);
+    text("秀まであと" + NextTime + "秒！",width/2,360);
   } else if (resultRaceTime <= RyoTime) {
     text("成績...良!!", width / 2, height * 0.55);
+    String NextTime = nf( (resultRaceTime-YuTime)/60, 1, 2);
+    text("優まであと" + NextTime + "秒！",width/2,360);
   } else if (resultRaceTime <= KaTime) {
     text("成績...可!!", width / 2, height * 0.55);
+    String NextTime = nf( (resultRaceTime-RyoTime)/60, 1, 2);
+    text("良まであと" + NextTime + "秒！",width/2,360);
   } else {
     text("成績...不可…", width / 2, height * 0.55);
+    String NextTime = nf( (resultRaceTime-KaTime)/60, 1, 2);
+    text("可まであと" + NextTime + "秒！",width/2,360);
   }
   if (KaTime >= resultRaceTime) {
     fill(50, 180, 50);
