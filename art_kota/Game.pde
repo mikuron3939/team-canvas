@@ -46,9 +46,24 @@ PImage hardleImg;
 PImage hardle_hitImg;
 PImage raceBackImg;
 PImage[] raceChara = new PImage[4];//レースの走っている姿
+PImage[] raceChara2 = new PImage[4];
 PImage genzaichiIcon;
 PImage  ManjaroDebuffImg;
 
+//BGM
+import ddf.minim.*;
+
+Minim minim;
+AudioPlayer bgmTitle;
+AudioPlayer bgmHome;
+AudioPlayer bgmRace;
+AudioPlayer bgmDarts;
+AudioPlayer bgmTraining;
+AudioPlayer bgmEat;
+AudioPlayer bgmSauna;
+AudioPlayer bgmShop;
+AudioPlayer bgmClear;
+int lastGameState= -1;
 void setup() {
   size(800, 600);
   textAlign(CENTER, CENTER);
@@ -110,11 +125,28 @@ void setup() {
   raceBackImg = loadImage("raceBack.png");
   
   raceChara[0] = loadImage("race100kg.png");
+  raceChara2[0]= loadImage("race100kg2.png");
   raceChara[1] = loadImage("race80kg.png");
+  raceChara2[1]= loadImage("race80kg2.png");
   raceChara[2] = loadImage("race65kg.png");
+  raceChara2[2]= loadImage("race65kg2.png");
   raceChara[3] = loadImage("race50kg.png");
+  raceChara2[3]= loadImage("race50kg2.png"); 
 
 genzaichiIcon = loadImage("genzaichiicon.png");
+
+//BGM
+minim = new Minim(this);
+
+bgmTitle    = minim.loadFile("title.mp3");
+bgmHome     = minim.loadFile("home.mp3");
+bgmRace     = minim.loadFile("race.mp3");
+bgmDarts    = minim.loadFile("darts.mp3");
+bgmTraining = minim.loadFile("training.mp3");
+bgmEat      = minim.loadFile("eat.mp3");
+bgmSauna    = minim.loadFile("sauna.mp3");
+bgmShop     = minim.loadFile("shop.mp3");
+bgmClear    = minim.loadFile("clear.mp3");
 
   //進むボタン
   next_yoko = 160;
@@ -124,6 +156,45 @@ genzaichiIcon = loadImage("genzaichiicon.png");
 }
 
 void draw() {
+  //BGM
+  
+if (gameState != lastGameState) {
+
+  stopAllBGM();
+
+  switch(gameState) {
+  case 0:
+    bgmTitle.loop();
+    break;
+  case 1:
+    bgmHome.loop();
+    break;
+  case 2:
+    bgmRace.loop();
+    break;
+  case 3:
+    bgmClear.loop();
+    break;
+  case 4:
+    bgmDarts.loop();
+    break;
+  case 5:
+    bgmTraining.loop();
+    break;
+  case 6:
+    bgmEat.loop();
+    break;
+  case 7:
+    bgmSauna.loop();
+    break;
+  case 8:
+    bgmShop.loop();
+    break;
+  }
+
+  lastGameState = gameState;
+}
+
   //FPSによってスピードが変わらないようにするため。
   if(frameRate >0){
     deltaTime=60.0/frameRate;
@@ -386,4 +457,27 @@ void keyPressed() {
       trainingSpacePressed();
     }
   }
+}
+
+//BGMを切り替る
+void stopAllBGM() {
+  bgmTitle.pause();
+  bgmHome.pause();
+  bgmRace.pause();
+  bgmDarts.pause();
+  bgmTraining.pause();
+  bgmEat.pause();
+  bgmSauna.pause();
+  bgmShop.pause();
+  bgmClear.pause();
+
+  bgmTitle.rewind();
+  bgmHome.rewind();
+  bgmRace.rewind();
+  bgmDarts.rewind();
+  bgmTraining.rewind();
+  bgmEat.rewind();
+  bgmSauna.rewind();
+  bgmShop.rewind();
+  bgmClear.rewind();
 }
