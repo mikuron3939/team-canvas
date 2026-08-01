@@ -317,7 +317,7 @@ else if (gameState == 5) {
       weight -= 1;
     } 
     else if (trainingResultStr.equals("SUCCESS!!")) {
-      weight -= 6;
+      weight -= 8;
     }
 
     kabeSpeed += 1;

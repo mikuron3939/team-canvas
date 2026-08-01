@@ -86,7 +86,7 @@ void HomeView() {
         fill(255, 0, 0);
         text("-10,000円", circleX[i] - 40, circleY - 90);
         fill(80, 255, 0);
-        text("-15kg", circleX[i] + 40, circleY - 90);
+        text("15kg減", circleX[i] + 40, circleY - 90);
       } else if (i == 1) {
         fill(0, 200);
         rect(circleX[i]-100, circleY - 130, circleX[0] + 50, 50);
@@ -96,9 +96,9 @@ void HomeView() {
         text("筋トレ", circleX[i], circleY - 120);
         textSize(20);
         fill(255, 0, 0);
-        text("-0円", circleX[i] - 40, circleY - 90);
+        text("0円", circleX[i] - 40, circleY - 90);
         fill(80, 255, 0);
-        text("-??kg", circleX[i] + 40, circleY - 90);
+        text("max8kg減", circleX[i] + 40, circleY - 90);
       } else if (i == 2) {
         fill(0, 200);
         rect(circleX[i]-100, circleY - 130, circleX[0] + 50, 50);
@@ -110,7 +110,7 @@ void HomeView() {
         fill(255, 0, 0);
         text("0円", circleX[i] - 40, circleY - 90);
         fill(80, 255, 0);
-        text("-??kg", circleX[i] + 40, circleY - 90);
+        text("max8kg減", circleX[i] + 40, circleY - 90);
       } else if (i == 3) {
         fill(0, 200);
         rect(circleX[i]-100, circleY - 130, circleX[0] + 50, 50);
@@ -122,7 +122,7 @@ void HomeView() {
         fill(255, 0, 0);
         text("0円", circleX[i] - 40, circleY - 90);
         fill(80, 255, 0);
-        text("-??kg", circleX[i] + 40, circleY - 90);
+        text("max18kg減", circleX[i] + 40, circleY - 90);
       }
     } else {//マウスが上になければ暗く
       noStroke();
