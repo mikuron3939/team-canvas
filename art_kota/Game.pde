@@ -298,7 +298,7 @@ else if (gameState == 5) {
     float itemSelect_tate = 60;
     float jumpItemX = 60;
     float jumpY = 420;
-    int jumpPrice = 3000;
+    int jumpPrice = 10000;
   
     if (mouseX >= jumpItemX && mouseX <= jumpItemX + itemSelect_yoko &&
         mouseY >= jumpY && mouseY <= jumpY + itemSelect_tate) {
